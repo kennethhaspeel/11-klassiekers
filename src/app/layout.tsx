@@ -30,7 +30,7 @@ export default function RootLayout({
           <div className="h-dvh bg-home-img bg-cover bg-center">
             <div className="flex flex-col w-full lg:max-w-7xl mx-auto h-full">
               <Header />
-              <div className="flex grow px-2 py-2 my-4 bg-white/40 rounded-xl text-black">{children}</div>
+              <div className="flex grow px-2 py-2 my-2 bg-white/40 rounded-xl text-black dark:bg-black/40 dark:text-white">{children}</div>
 
               <Footer />
             </div>

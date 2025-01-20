@@ -9,7 +9,7 @@ const Header = () => {
       {isMobiel ? (
         <p>Dit is een mobiel scherm</p>
       ) : (
-        <div className="py-2 px-4 bg-white/40 dark:bg-black/40 rounded-b-lg">Header</div>
+        <div className="py-2 px-4  bg-white/40 rounded-xl text-black dark:bg-black/40 dark:text-white rounded-b-lg">Header</div>
       )}
     </>
   );
