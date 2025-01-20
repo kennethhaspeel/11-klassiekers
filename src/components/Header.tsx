@@ -1,9 +1,14 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-
-const Header = () => {
+interface Props {
+  authenticated: boolean;
+  rechten: string[] | undefined;
+}
+const Header =({ authenticated, rechten }: Props) => {
   const isMobiel = useIsMobile();
+  console.log(authenticated)
+  console.log(rechten)
   return (
     <>
       {isMobiel ? (
