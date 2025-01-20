@@ -1,3 +1,5 @@
+Dit is een project voor een vriendschappelijke pronostiek voor 11 voorjaarsklassiekers
+
 # Gebruikte Technologie
 
 -   🔗  [Next.js](https://nextjs.org/)
