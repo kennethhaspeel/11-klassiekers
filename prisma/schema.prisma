@@ -1,14 +1,98 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Deelnemer {
+    id          String        @id
+    naam        String        @db.VarChar(100)
+    voornaam    String        @db.VarChar(100)
+    email       String        @unique
+    telefoon    String        @db.VarChar(100)
+    ploegnaam   String        @db.VarChar(100)
+    createdAt   DateTime?      @default(now())
+    updatedAt   DateTime?      @updatedAt
+    Selectie    Selectie[]
+    Uitslag     Uitslag[]
+    Tussenstand Tussenstand[]
+
+    @@map("deelnemers")
+}
+
+model Selectie {
+    id          Int       @id @default(autoincrement())
+    deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
+    deelnemerid String
+    renner      Renner    @relation(fields: [rennerid], references: [id])
+    rennerid    Int
+    datum_in    DateTime  @db.Date
+    datum_uit   DateTime  @db.Date
+
+    @@map("selecties")
+}
+
+model Renner {
+    id            Int        @id @default(autoincrement())
+    naam          String     @db.VarChar(100)
+    foto          String
+    vlag          String     @db.VarChar(5)
+    nationaliteit String
+    url           String
+    team          Team       @relation(fields: [teamid], references: [id])
+    teamid        Int
+    Selectie      Selectie[]
+    Uitslag       Uitslag[]
+
+    @@map("renners")
+}
+
+model Team {
+    id     Int      @id @default(autoincrement())
+    naam   String   @db.VarChar(100)
+    url    String
+    Renner Renner[]
+
+    @@map("teams")
+}
+
+model Wedstrijd {
+    id          Int           @id @default(autoincrement())
+    naam        String        @db.VarChar(100)
+    datum       DateTime      @db.Date
+    afgesloten  Boolean
+    Uitslag     Uitslag[]
+    Tussenstand Tussenstand[]
+
+    @@map("wedstrijden")
+}
+
+model Uitslag {
+    id          Int       @id @default(autoincrement())
+    renner      Renner    @relation(fields: [rennerid], references: [id])
+    rennerid    Int
+    deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
+    deelnemerid String
+    wedstrijd   Wedstrijd @relation(fields: [wedstrijdid], references: [id])
+    wedstrijdid Int
+    positie     Int
+    punten      Int
+
+    @@map("uitslagen")
+}
+
+model Tussenstand {
+    id          Int       @id @default(autoincrement())
+    deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
+    deelnemerid String
+    wedstrijd   Wedstrijd @relation(fields: [wedstrijdid], references: [id])
+    wedstrijdid Int
+    punten      Int
+
+    @@map("tussenstanden")
 }

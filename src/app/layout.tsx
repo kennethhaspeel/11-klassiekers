@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/components/Providers";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -19,28 +18,28 @@ export const metadata: Metadata = {
   applicationName: "11 klassiekers",
 };
 
-export default async function RootLayout({
+export default  function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isAuthenticated, getPermissions } = getKindeServerSession();
-  const authenticated = await isAuthenticated();
-  const auths = await getPermissions();
+
   return (
     <html lang="nl-be" suppressHydrationWarning>
       <body className={`${inter.className} `}>
-        <Providers>
+        <ThemeProvider attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange>
           <div className="h-dvh bg-home-img bg-cover bg-center">
             <div className="flex flex-col w-full lg:max-w-7xl mx-auto h-full">
-              <Header authenticated={authenticated}
-                rechten={auths?.permissions}/>
-              <div className="flex grow px-2 py-2 my-2 bg-white/40 rounded-xl text-black dark:bg-black/40 dark:text-white">{children}</div>
+              <Header />
+              <div className="flex grow px-2 py-2 my-2 bg-white/80  text-black dark:bg-black/40 dark:text-white">{children}</div>
 
               <Footer />
             </div>
           </div>
-        </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

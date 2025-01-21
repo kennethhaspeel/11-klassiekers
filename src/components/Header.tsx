@@ -1,23 +1,21 @@
-"use client";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import AuthMenu from "./Navigation/AuthMenu";
+import AnonMenu from "./Navigation/AnonMenu";
 
-import { useIsMobile } from "@/hooks/use-mobile";
-interface Props {
-  authenticated: boolean;
-  rechten: string[] | undefined;
-}
-const Header =({ authenticated, rechten }: Props) => {
-  const isMobiel = useIsMobile();
-  console.log(authenticated)
-  console.log(rechten)
-  return (
-    <>
-      {isMobiel ? (
-        <p>Dit is een mobiel scherm</p>
-      ) : (
-        <div className="py-2 px-4  bg-white/40 rounded-xl text-black dark:bg-black/40 dark:text-white rounded-b-lg">Header</div>
-      )}
-    </>
-  );
+const Header = async () => {
+  const { isAuthenticated, getPermissions } = getKindeServerSession();
+  const authenticated = await isAuthenticated();
+  const rechten = await getPermissions();
+
+  if (authenticated) {
+    return (
+      <AuthMenu
+        isAdmin={(rechten && rechten?.permissions.includes("admin")) || false}
+      />
+    );
+  } else {
+    return <AnonMenu />;
+  }
 };
 
 export default Header;
