@@ -6,13 +6,13 @@ import { CheckPeriode } from '@/components/DatumFuncties';
 import { GetWedstrijden } from '../../../../prisma/queries/WedstrijdenQueries';
 
 const MaakSelectie = async () => {
-    // const { getUser, isAuthenticated } = getKindeServerSession();
-    // const auth = await isAuthenticated();
-    // if (!auth) {
-    //   return <GeenToegang />;
-    // }
-    // const user = await getUser();
-   
+    const { getUser, isAuthenticated } = getKindeServerSession();
+    const auth = await isAuthenticated();
+    if (!auth) {
+      return <GeenToegang />;
+    }
+    const user = await getUser();
+   console.log(user)
 const lijst = await GetWedstrijden();
 // periode 1 = eerste selectie
 // periode 2 = wedstrijddag

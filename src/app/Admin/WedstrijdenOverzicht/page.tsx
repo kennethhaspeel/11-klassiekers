@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 const page = async () => {
   const { getUser, isAuthenticated } = getKindeServerSession();
+  const user = getUser();
+  console.log(user)
   const auth = await isAuthenticated();
   if (!auth) {
     return <GeenToegang />;
