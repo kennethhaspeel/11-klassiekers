@@ -5,7 +5,7 @@ import { InsertDeelnemer } from "../queries/UserQueries";
 import { z } from "zod";
 
 const NieuweDeelnemerSchema = z.object({
-    id: z.string().min(1),
+  kindeid: z.string().min(1),
     naam: z.string().min(1, "Geef een korte omschrijving van de missie"),
     voornaam: z.string().min(1, "Geef een korte omschrijving van de missie"),
     email: z.string().min(1, "Geef een korte omschrijving van de missie"),
@@ -26,7 +26,7 @@ export async function InsertDeelnemerAction(previousState: unknown, form: FormDa
     }
 
     const d:Deelnemer = {
-        id: form.get("id") as string,
+        id: form.get("kindeid") as string,
         naam: form.get("naam") as string,
         voornaam: form.get("voornaam") as string,
         email: form.get("email") as string,

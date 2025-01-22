@@ -21,7 +21,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
   return (
     <>
       <div className="hidden md:block">
-        <div className="py-2 px-4  bg-white/40 rounded-xl text-black dark:bg-black/40 dark:text-white rounded-b-lg">
+        <div className="py-2 px-4  bg-white/80 text-black dark:bg-black/40 dark:text-white">
           <div className="flex h-8 items-center justify-between w-full">
             <div className="flex items-center">
               <Button
@@ -39,6 +39,8 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   <h2> 11 Klassiekers</h2>
                 </Link>
               </Button>
+              </div>
+
               <div className="flex items-center">
                 <Button
                   variant="ghost"
@@ -86,6 +88,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   </Link>
                 </Button>
               </div>
+            
               <div className="flex items-center gap-2">
                 {isAdmin ? (
                   <div className="flex ">
@@ -141,8 +144,8 @@ const AuthMenu = ({ isAdmin }: Props) => {
               </div>
             </div>
           </div>
-        </div>{" "}
-      </div>
+        </div>
+  
 
       <div className="md:hidden">
         <div className="py-2 px-4  bg-white/80 text-black dark:bg-black/40 dark:text-white flex flex-row justify-between">
