@@ -50,7 +50,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   asChild
                 >
                   <Link
-                    href="/Deelnemer/wedstrijdenOverzicht"
+                    href="/Deelnemer/WedstrijdenOverzicht"
                     className="flex justify-center items-center gap-2 ml-0"
                     title="wedstrijdenOverzicht"
                   >
@@ -65,7 +65,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   asChild
                 >
                   <Link
-                    href="/Deelnemer/mijnploeg"
+                    href="/Deelnemer/MijnPloeg"
                     className="flex justify-center items-center gap-2 ml-0"
                     title="Mijn Ploeg"
                   >
@@ -100,7 +100,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                       asChild
                     >
                       <Link
-                        href="Admin/OverzichtWedstrijden"
+                        href="/Admin/WedstrijdenOverzicht"
                         className="flex justify-center items-center gap-2 ml-0"
                         title="Uitslag Verwerken"
                       >
