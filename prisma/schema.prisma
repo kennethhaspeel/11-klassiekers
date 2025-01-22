@@ -1,6 +1,5 @@
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -16,8 +15,8 @@ model Deelnemer {
     email       String        @unique
     telefoon    String        @db.VarChar(100)
     ploegnaam   String        @db.VarChar(100)
-    createdAt   DateTime?      @default(now())
-    updatedAt   DateTime?      @updatedAt
+    createdAt   DateTime?     @default(now())
+    updatedAt   DateTime?     @updatedAt
     Selectie    Selectie[]
     Uitslag     Uitslag[]
     Tussenstand Tussenstand[]
@@ -44,6 +43,7 @@ model Renner {
     vlag          String     @db.VarChar(5)
     nationaliteit String
     url           String
+    uciranking    Int
     team          Team       @relation(fields: [teamid], references: [id])
     teamid        Int
     Selectie      Selectie[]
