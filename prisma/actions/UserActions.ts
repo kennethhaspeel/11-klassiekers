@@ -1,7 +1,7 @@
 "use server";
 
 import { Deelnemer } from "@prisma/client";
-import { InsertDeelnemer } from "../queries/UserQueries";
+import { InsertDeelnemer, UpdateMetFoto } from "../queries/UserQueries";
 import { z } from "zod";
 
 const NieuweDeelnemerSchema = z.object({
@@ -23,7 +23,7 @@ export async function InsertDeelnemerAction(
   const data = Object.fromEntries(form);
 
   const checkSchema = NieuweDeelnemerSchema.safeParse(data);
-  console.log(previousState);
+
   if (!checkSchema.success) {
     return { errors: checkSchema.error.formErrors };
   }
@@ -35,10 +35,25 @@ export async function InsertDeelnemerAction(
     email: form.get("email") as string,
     telefoon: form.get("telefoon") as string,
     ploegnaam: form.get("ploegnaam") as string,
+    metFoto:false,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
   await InsertDeelnemer(d);
   return { allSaved: true };
+}
+
+interface updateMetFotoInterface {
+  deelnemerid:string;
+  metFoto:boolean;
+}
+export async function updateMetFotoAction(previousState:unknown,{deelnemerid,metFoto}:updateMetFotoInterface){
+  try {
+    await UpdateMetFoto(deelnemerid,metFoto)
+  }
+  catch (error: unknown) {
+    console.log(typeof error);
+    return "fout bij bewaren";
+  }
 }

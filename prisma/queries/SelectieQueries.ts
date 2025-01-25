@@ -19,8 +19,24 @@ export async function GetSelectieByUserId(id: string) {
   return result;
 }
 
+export async function ToevoegenAanSelectie(deelnemerid:string,rennerid:number){
+  console.log(`Saving member with deelnemerid ${deelnemerid} and rennerid ${rennerid}`)
+  const datum = new Date()
+  const data = {
+    deelnemerid: deelnemerid,
+    rennerid:rennerid,
+    datum_in: new Date(datum.toISOString().split("T")[0])
+  }
+  console.log(data)
+  const result = await db.selectie.create({
+    data:data
+  })
+  console.log(`Resultaat van bewaren: ${result.id}`)
+  return result
+}
+
 export async function DeleteFromSelectie(selectieid: number) {
-  const result = db.selectie.delete({
+  const result = await db.selectie.delete({
     where: {
       id: selectieid,
     },

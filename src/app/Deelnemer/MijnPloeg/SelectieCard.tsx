@@ -11,7 +11,7 @@ import {
 
 import Image from "next/image";
 import { Renner, Selectie, Team } from "@prisma/client";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { VerwijderUitSelectieAction } from "../../../../prisma/actions/SelectieActions";
 import { useActionState } from "react";
 
@@ -45,7 +45,10 @@ const SelectieCard = ({
 }: Props) => {
   const [waarschuwingTonen, setWaarschuwingTonen] = useState(false);
 
-  const [error,action, isPending] = useActionState(VerwijderUitSelectieAction,null);
+  const [error, action, isPending] = useActionState(
+    VerwijderUitSelectieAction,
+    null
+  );
 
   const VerwijderRenner = async (rennerid: number) => {
     console.log(periode);
@@ -53,17 +56,15 @@ const SelectieCard = ({
     lijst = lijst.filter((x) => x.rennerid == rennerid);
     setRenners(lijst);
     // verwijder renner uit database
-
-    action( {selectieid:selectieid,periode:periode});
-
+    startTransition(() => {
+      action({ selectieid: selectieid, periode: periode });
+    });
 
     //await UpdateDatabase(selectieid);
   };
   return (
     <>
-    <div>
-      {error && <p>{error}</p>}
-    </div>
+      <div>{error && <p>{error}</p>}</div>
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="text-center">
@@ -108,15 +109,10 @@ const SelectieCard = ({
           {waarschuwingTonen ? (
             <div className="flex flex-col bg-gray-500/50 w-full p-2 rounded-xl">
               <div className="text-center w-full my-1">Bent u zeker ?</div>
-              <div>
-                {
-                  isPending ? (<p>laden</p>) : (<p>niet laden</p>)
-                }
-              </div>
+              <div>{isPending ? <p>laden</p> : <p>niet laden</p>}</div>
               <div className="w-full flex flex-row justify-between gap-2">
                 <Button
                   variant="outline"
-                 
                   onClick={() =>
                     setWaarschuwingTonen((prevState) => !prevState)
                   }

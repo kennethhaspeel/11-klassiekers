@@ -18,3 +18,15 @@ export async function InsertDeelnemer(deelnemer: Deelnemer) {
   });
   return result;
 }
+
+export async function UpdateMetFoto(deelnemerid: string, metFoto: boolean) {
+  const result = await db.deelnemer.update({
+    where: {
+      id: deelnemerid,
+    },
+    data: {
+      metFoto: metFoto,
+    },
+  });
+  return result;
+}

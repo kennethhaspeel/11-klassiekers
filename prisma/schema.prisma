@@ -1,5 +1,6 @@
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -15,6 +16,7 @@ model Deelnemer {
     email       String        @unique
     telefoon    String        @db.VarChar(100)
     ploegnaam   String        @db.VarChar(100)
+    metFoto     Boolean       @default(false)
     createdAt   DateTime?     @default(now())
     updatedAt   DateTime?     @updatedAt
     Selectie    Selectie[]
@@ -31,7 +33,7 @@ model Selectie {
     renner      Renner    @relation(fields: [rennerid], references: [id])
     rennerid    Int
     datum_in    DateTime  @db.Date
-    datum_uit   DateTime  @db.Date
+    datum_uit   DateTime?  @db.Date
 
     @@map("selecties")
 }

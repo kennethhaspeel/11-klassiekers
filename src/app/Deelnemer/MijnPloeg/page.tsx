@@ -9,7 +9,7 @@ import { GetUserById } from "../../../../prisma/queries/UserQueries";
 import { GetSelectieByUserId } from "../../../../prisma/queries/SelectieQueries";
 import { Renner, Selectie, Team } from "@prisma/client";
 
-type SelectieMetRenner = Selectie & {renner: Renner & {team:Team}}
+type SelectieMetRenner = Selectie & { renner: Renner & { team: Team } };
 const MaakSelectie = async () => {
   const { getUser, isAuthenticated } = getKindeServerSession();
   const auth = await isAuthenticated();
@@ -22,18 +22,29 @@ const MaakSelectie = async () => {
   // periode 3 = tussen wedstrijden
   const periode = CheckPeriode(lijst);
 
-
   const user = await getUser();
   const deelnemer = await GetUserById(user.id);
-  const selecties:SelectieMetRenner[] = await GetSelectieByUserId(user.id)
+  const selecties: SelectieMetRenner[] = await GetSelectieByUserId(user.id);
 
-  if(!deelnemer){return <p>Fout bij laden van pagina</p>}
+  if (!deelnemer) {
+    return <p>Fout bij laden van pagina</p>;
+  }
 
   switch (periode) {
     case 1:
-      return <BasisSelectie ploegnaam={deelnemer.ploegnaam} selecties={selecties} periode={periode}/>;
+      return (
+        <BasisSelectie
+          ploegnaam={deelnemer.ploegnaam}
+          deelnemerid={deelnemer.id}
+          inclFoto={deelnemer.metFoto}
+          selecties={selecties}
+          periode={periode}
+        />
+      );
       break;
-
+    case 2:
+      return <p>Geen aanpassing aan selectie mogelijk op wedstrijddag</p>;
+      break;
     default:
       break;
   }

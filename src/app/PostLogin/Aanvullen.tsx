@@ -84,7 +84,7 @@ console.log(kindeid)
               <div className="py-2">
                 {isPending ? (
                   <Button variant="outline" disabled>
-                    <Loader2 className="animate-spin/>" /> Bewaren...
+                    <Loader2 className="animate-spin" /> Bewaren...
                   </Button>
                 ) : (
                   <Button variant="outline" type="submit">
