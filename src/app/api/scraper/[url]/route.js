@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import * as cheerio from "cheerio"
 
-export async function GET(req) {
-  console.log(req);
-  const response = await fetch(
-    "https://www.procyclingstats.com/race/milano-sanremo/2024/result"
-  );
+export async function GET(req,{params}) {
+ const {url} = await params;
+
+  const response = await fetch(url);
   const htmlString = await response.text();
   const $ = cheerio.load(htmlString);
   const d = $("table.results:first tbody tr");
@@ -17,14 +16,13 @@ export async function GET(req) {
       if (attribuut) {
         const tdRider = $(element).find("td:nth-child(5) a").text().trim();
         lijst.push({
-            positie: rnk,
+            positie: Number(rnk),
             naam: tdRider
         })
-        console.log(`${rnk} : ${tdRider}`);
       }
     }
   });
-  return NextResponse.json({ lijst })
+  return NextResponse.json(lijst, { status: 200 })
 
 }
 

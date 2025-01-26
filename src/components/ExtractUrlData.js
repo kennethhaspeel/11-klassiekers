@@ -1,7 +1,14 @@
 "use server";
-
+import axios from "axios";
 export async function ExtractDataUrl(url) {
-  console.log(url)
-  const data = await fetch('http://localhost:3000/api/scraper')
-return data
+  try {
+    const d = await axios
+      .get(`${process.env.API_PATH}/api/scraper/${encodeURIComponent(url)}`)
+      .then((response) => {
+        return response.data;
+      });
+    return d;
+  } catch (error) {
+    console.log(error);
+  }
 }
