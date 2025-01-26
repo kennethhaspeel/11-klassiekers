@@ -19,19 +19,20 @@ export async function GetSelectieByUserId(id: string) {
   return result;
 }
 
-export async function ToevoegenAanSelectie(deelnemerid:string,rennerid:number){
-  console.log(`Saving member with deelnemerid ${deelnemerid} and rennerid ${rennerid}`)
-  const datum = new Date()
-  const data = {
-    deelnemerid: deelnemerid,
-    rennerid:rennerid,
-    datum_in: new Date(datum.toISOString().split("T")[0])
-  }
-  console.log(data)
+interface ToevoegenAanSelectieInterface{
+  deelnemerid:string;
+  rennerid:number
+}
+export async function ToevoegenAanSelectie({deelnemerid,rennerid}:ToevoegenAanSelectieInterface){
+  console.log(`Start saving query with deelnemerid ${deelnemerid} and rennerid ${rennerid} and date ${new Date()}`)
   const result = await db.selectie.create({
-    data:data
+    data:{
+      deelnemerid: deelnemerid,
+      rennerid:Number(rennerid),
+      datum_in: new Date()
+    }
   })
-  console.log(`Resultaat van bewaren: ${result.id}`)
+  console.log(`Saving ended with id ${result.id}`)
   return result
 }
 

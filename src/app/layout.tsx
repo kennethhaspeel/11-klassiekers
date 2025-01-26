@@ -26,12 +26,13 @@ export default  function RootLayout({
 
   return (
     <html lang="nl-be" suppressHydrationWarning>
-      <body className={`${inter.className} `}>
+      <body className={`${inter.className} bg-home-img bg-cover bg-center`}>
+
         <ThemeProvider attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange>
-          <div className="h-dvh bg-home-img bg-cover bg-center">
+          <div className="h-dvh">
             <div className="flex flex-col w-full lg:max-w-7xl mx-auto h-full">
               <Header />
               <div className="flex grow px-2 py-2 my-2 bg-white/80  text-black dark:bg-black/40 dark:text-white">{children}</div>
@@ -40,6 +41,7 @@ export default  function RootLayout({
             </div>
           </div>
         </ThemeProvider>
+
       </body>
     </html>
   );

@@ -73,10 +73,12 @@ const BasisSelectie = ({
                   </AccordionTrigger>
                   <AccordionContent>
                     <>
-                      <div className="flex flex-row gap-2">
+                      <div className="flex w-full">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mx-auto justify-between">
                         {renners ? (
                           renners?.map((selectie) => (
                             <SelectieCard
+                            
                               key={selectie.id}
                               selectieid={selectie.id}
                               rennerid={selectie.rennerid}
@@ -96,6 +98,7 @@ const BasisSelectie = ({
                         ) : (
                           <p>Nog geen renners geselecteerd</p>
                         )}
+                        </div>
                       </div>
                     </>
                   </AccordionContent>

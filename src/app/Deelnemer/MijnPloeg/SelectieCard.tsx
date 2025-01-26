@@ -64,8 +64,7 @@ const SelectieCard = ({
   };
   return (
     <>
-      <div>{error && <p>{error}</p>}</div>
-      <Card className="w-[350px]">
+      <Card className="w-[350px] mt-2">
         <CardHeader>
           <CardTitle className="text-center">
             <div className="flex flex-col">
@@ -137,6 +136,9 @@ const SelectieCard = ({
               </Button>
             </div>
           )}
+          <p>
+            {error && <p>error</p>}
+          </p>
         </CardFooter>
       </Card>
     </>

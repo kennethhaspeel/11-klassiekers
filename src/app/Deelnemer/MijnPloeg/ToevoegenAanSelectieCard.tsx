@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Renner, Selectie, Team } from "@prisma/client";
 import Image from "next/image";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { ToevoegenAanSelectieAction } from "../../../../prisma/actions/SelectieActions";
 import { Loader2 } from "lucide-react";
 
@@ -30,16 +30,37 @@ interface Props {
 const ToevoegenAanSelectieCard = ({
   renner,
   metFoto,
-
   renners,
-
   deelnemerid,
+  setRenners,
 }: Props) => {
-  const [data,action, isPending] = useActionState(ToevoegenAanSelectieAction, null);
+  const [data, action, isPending] = useActionState(
+    ToevoegenAanSelectieAction,
+    null
+  );
+
+  const ToevoegenAanRenners = (NieuweSelectie:Selectie) => {
+    const r: SelectieMetRenner = {
+      id:NieuweSelectie.id,
+      rennerid: NieuweSelectie.rennerid,
+      deelnemerid:NieuweSelectie.deelnemerid,
+      datum_in: NieuweSelectie.datum_in,
+      datum_uit: NieuweSelectie.datum_uit,
+      renner: renner
+    }
+    const sel = [...renners, r];
+    setRenners(sel)
+    console.log(sel);
+  };
+  useEffect(() => {
+    if (data?.data) {
+      ToevoegenAanRenners(data.data)
+    }
+  }, [data?.data]);
   return (
     <>
-      <div>{data?.error && <p>{data.error}</p>}</div>
-      <Card className="w-[350px]">
+
+      <Card className="w-[350px] mt-2">
         <CardHeader>
           <CardTitle className="text-center">
             <div className="flex flex-col">

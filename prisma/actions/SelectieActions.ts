@@ -1,6 +1,6 @@
 "use server";
 
-
+import { revalidatePath } from "next/cache";
 import {
   DeleteFromSelectie,
   ToevoegenAanSelectie,
@@ -36,13 +36,18 @@ export async function ToevoegenAanSelectieAction(
     const deelnemerid: string = formData.get("deelnemerid") as string;
     const rennerid: number = formData.get("rennerid") as unknown as number;
 
-    console.log(deelnemerid)
-    console.log(rennerid)
-    const result = await ToevoegenAanSelectie(deelnemerid, rennerid);
-    //revalidatePath('/Deelnemer/MijnPloeg')
+    console.log(deelnemerid);
+    console.log(rennerid);
+    const result = await ToevoegenAanSelectie({
+      deelnemerid: deelnemerid,
+      rennerid: rennerid,
+    });
+    revalidatePath("/Deelnemer/MijnPloeg");
     return { data: result, error: null };
   } catch (error: unknown) {
-    console.log(error);
+    if (error instanceof Error) {
+      console.log("Error: ", error.stack);
+    }
     return { data: null, error: "fout bij zoeken" };
   }
 }

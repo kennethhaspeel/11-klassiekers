@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
 		backgroundImage: {
-			'home-img': "url('/images/achtergrond1.jpg')",
+			'home-img': "linear-gradient(to bottom, rgba(43, 108, 176, 0.1), rgba(43, 108, 176, 0.3)),url('/images/achtergrond1.jpg')",
 		},
   		colors: {
   			background: 'hsl(var(--background))',

@@ -16,17 +16,23 @@ interface Props {
   setRenners: React.Dispatch<React.SetStateAction<SelectieMetRenner[]>>;
   renners: SelectieMetRenner[];
   periode: number;
-  deelnemerid:string;
+  deelnemerid: string;
 }
-const ZoekRenner = ({ metFoto, setRenners, renners, periode ,deelnemerid}: Props) => {
+const ZoekRenner = ({
+  metFoto,
+  setRenners,
+  renners,
+  periode,
+  deelnemerid,
+}: Props) => {
   const [zoekTekst, setZoekTekst] = useState<string | undefined>(undefined);
   //const[zoekResultaat,setZoekResultaat] = useState<ZoekResultaat[]|null>(null)
   const [data, action, isPending] = useActionState(ZoekRennerAction, null);
 
   return (
     <>
-      <div>
-        {renners.filter((x) => x.datum_uit!.getFullYear() < 2025).length < 10 ? (
+      <div className="w-full">
+        {renners.filter((x) => x.datum_uit != null) ? (
           <>
             <div>
               <div className="flex w-full max-w-sm items-center space-x-2">
@@ -55,26 +61,27 @@ const ZoekRenner = ({ metFoto, setRenners, renners, periode ,deelnemerid}: Props
                 </form>
               </div>
             </div>
-            <div className="mt-2 flex flex-row gap-2">
+            <div className="w-full mt-2 flex flex-row gap-2">
               {data && data.data ? (
                 <>
-                  <div className="flex flex-col">
-                    <div className="flex mt-2 text-xl">
-                        Zoekresultaten
+                  <div className="flex flex-col w-full">
+                    <div className="flex mt-2 text-xl">Zoekresultaten</div>
+                    <div className="w-full">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  mx-auto justify-between">
+                        {data.data.map((renner) => (
+                          <ToevoegenAanSelectieCard
+                            key={renner.id}
+                            renner={renner}
+                            metFoto={metFoto}
+                            periode={periode}
+                            renners={renners}
+                            setRenners={setRenners}
+                            deelnemerid={deelnemerid}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  <div className="flex mt-2">
-                    {data.data.map((renner) => (
-                      <ToevoegenAanSelectieCard
-                        key={renner.id}
-                        renner={renner}
-                        metFoto={metFoto}
-                        periode={periode}
-                        renners={renners}
-                        setRenners={setRenners}
-                        deelnemerid={deelnemerid}
-                      />
-                    ))}
-                  </div></div>
+                  </div>
                 </>
               ) : (
                 <div className="mt-2">

@@ -8,6 +8,7 @@ import BasisSelectie from "./BasisSelectie";
 import { GetUserById } from "../../../../prisma/queries/UserQueries";
 import { GetSelectieByUserId } from "../../../../prisma/queries/SelectieQueries";
 import { Renner, Selectie, Team } from "@prisma/client";
+import TransferPagina from "./TransferPagina";
 
 type SelectieMetRenner = Selectie & { renner: Renner & { team: Team } };
 const MaakSelectie = async () => {
@@ -29,7 +30,7 @@ const MaakSelectie = async () => {
   if (!deelnemer) {
     return <p>Fout bij laden van pagina</p>;
   }
-
+  console.log(periode);
   switch (periode) {
     case 1:
       return (
@@ -41,14 +42,19 @@ const MaakSelectie = async () => {
           periode={periode}
         />
       );
-      break;
-    case 2:
-      return <p>Geen aanpassing aan selectie mogelijk op wedstrijddag</p>;
-      break;
+    case 3:
+      return (
+        <TransferPagina
+          ploegnaam={deelnemer.ploegnaam}
+          deelnemerid={deelnemer.id}
+          inclFoto={deelnemer.metFoto}
+          selecties={selecties}
+          periode={periode}
+        />
+      );
     default:
-      break;
+      return <p>Geen aanpassing aan selectie mogelijk op wedstrijddag</p>;
   }
-  return <div>MaakSelectie</div>;
 };
 
 export default MaakSelectie;
