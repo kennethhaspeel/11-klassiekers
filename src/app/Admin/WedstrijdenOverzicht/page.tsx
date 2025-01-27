@@ -63,7 +63,7 @@ const page = async () => {
                       ) : (
                         <Button className="bg-green-600 w-full">
                           <Link
-                            href={`Admin/WedstrijdUitslag/${wedstrijd.id}`}
+                            href={`/Admin/VerwerkWedstrijd/${wedstrijd.id}`}
                             className="flex justify-center items-center gap-2 ml-0"
                             title="Uitslag Verwerken"
                           >
