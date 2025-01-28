@@ -2,7 +2,7 @@
 import { ExtractDataUrl } from "@/components/ExtractUrlData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, {   useState } from "react";
+import React, {   useActionState, useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
+import { PostUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
 
 interface uitslagInterface {
   positie: number;
@@ -25,13 +26,15 @@ const VerwerkUrl = ({wedstrijdid}:Params) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>("https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result");
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
-//  const [error, action, isPending] = useActionState(
-//   PostUitslagWedstrijd,
-//     null
-//   );
+ const [error, action, isPending] = useActionState(
+  PostUitslagWedstrijdAction,
+    null
+  );
   const getData = async () => {
     setLoading(true);
     setUitslag(null);
+
+
     const data: uitslagInterface[] = await ExtractDataUrl(url);
     setUitslag(data);
     setLoading(false)
@@ -39,14 +42,15 @@ const VerwerkUrl = ({wedstrijdid}:Params) => {
 
   const saveData = async()=>{
     console.log(uitslag)
-    // action({
-    //   wedstrijdid:wedstrijdid,
-    //   uitslag:uitslag!
-    // })
+        const formData = new FormData();
+    formData.append("wedstrijdid",wedstrijdid.toString())
+    formData.append("uitslag",JSON.stringify(uitslag))
+    action(formData)
 
   }
   return (
     <>
+    {error ? <p>{error}</p>:<p></p>}
       <div className="flex flex-col w-full">
         <div>
           <form className="flex flex-row w-full gap-3">

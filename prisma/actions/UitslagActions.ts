@@ -2,17 +2,10 @@
 
 import { PostUitslagWedstrijdQuery } from "../queries/WedstrijdenQueries";
 
-interface BewaarUitslagInterface {
-    wedstrijdid:number;
-    uitslag: {
-        positie:number;
-        naam:string
-    }[]
-}
-export async function PostUitslagWedstrijdAction(previousState:unknown,{wedstrijdid,uitslag}:BewaarUitslagInterface){
+export async function PostUitslagWedstrijdAction(previousState:unknown,formdata:FormData){
 const result = await PostUitslagWedstrijdQuery({
-    wedstrijdid:wedstrijdid,
-    uitslag:uitslag
+    wedstrijdid:Number(formdata.get("wedstrijdid")),
+    uitslag:JSON.parse(formdata.get("uitslag") as string)
 })
 return result
 }
