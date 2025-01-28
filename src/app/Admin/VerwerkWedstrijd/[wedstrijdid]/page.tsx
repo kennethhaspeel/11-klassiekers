@@ -1,17 +1,16 @@
-import React from 'react'
-import VerwerkUrl from './VerwerkUrl'
+import React from "react";
+import VerwerkUrl from "./VerwerkUrl";
 
-const VerwerkWedstrijd = async ({
-  params,
-}: {
-  params: { wedstrijid:number };
-})  => {
-  console.log(params.wedstrijid)
+type Params = Promise<{ wedstrijdid: number }>;
+
+const VerwerkWedstrijd = async ({ params }: { params: Params }) => {
+  const { wedstrijdid } = await params;
+
   return (
     <>
-    <VerwerkUrl/>
+      <VerwerkUrl wedstrijdid={wedstrijdid}/>
     </>
-  )
-}
+  );
+};
 
-export default VerwerkWedstrijd
+export default VerwerkWedstrijd;

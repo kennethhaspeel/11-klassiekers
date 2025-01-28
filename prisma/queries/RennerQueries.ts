@@ -22,3 +22,12 @@ export async function ZoekRennersQuery(zoekterm:string){
     })
     return result
 }
+
+export async function GetRennerByIdQuery(naam:string){
+    const result = await db.renner.findFirst({
+        where:{
+            naam: naam
+        }
+    })
+    return result
+}

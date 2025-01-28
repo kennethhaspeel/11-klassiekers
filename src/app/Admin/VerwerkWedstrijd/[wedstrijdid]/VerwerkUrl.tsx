@@ -2,7 +2,7 @@
 import { ExtractDataUrl } from "@/components/ExtractUrlData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React, {   useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,18 +11,40 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Loader2 } from "lucide-react";
+
 interface uitslagInterface {
   positie: number;
   naam: string;
 }
-const VerwerkUrl = () => {
-  const [url, setUrl] = useState<string | null>(null);
+interface Params{
+  wedstrijdid:number
+}
+const VerwerkUrl = ({wedstrijdid}:Params) => {
+  console.log(wedstrijdid)
+  const [loading, setLoading] = useState<boolean>(false);
+  const [url, setUrl] = useState<string | null>("https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result");
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
-
+//  const [error, action, isPending] = useActionState(
+//   PostUitslagWedstrijd,
+//     null
+//   );
   const getData = async () => {
+    setLoading(true);
+    setUitslag(null);
     const data: uitslagInterface[] = await ExtractDataUrl(url);
     setUitslag(data);
+    setLoading(false)
   };
+
+  const saveData = async()=>{
+    console.log(uitslag)
+    // action({
+    //   wedstrijdid:wedstrijdid,
+    //   uitslag:uitslag!
+    // })
+
+  }
   return (
     <>
       <div className="flex flex-col w-full">
@@ -31,7 +53,8 @@ const VerwerkUrl = () => {
             <Input
               type="text"
               name="zoekterm"
-              placeholder="geen url in"
+              defaultValue="https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
+              placeholder="geen url ingegeven"
               onChange={(e) => setUrl(e.target.value)}
               className="w-full"
             />
@@ -49,6 +72,15 @@ const VerwerkUrl = () => {
             Overzicht
           </h2>
         </div>
+        {uitslag == null && loading ? (
+          <div className="grid grid-col-1 text-2xl justify-items-center w-full gap-4">
+            <Loader2 className="animate-spin text-red-600" size={40}/>
+            <Loader2 className="animate-spin text-green-600"  size={40}/>
+            <Loader2 className="animate-spin text-cyan-600"  size={40}/>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="w-full">
           {uitslag ? (
             <>
@@ -68,10 +100,10 @@ const VerwerkUrl = () => {
                   ))}
                 </TableBody>
               </Table>
-              <Button type="button">Bewaar</Button>
+              <Button type="button" onClick={saveData}>Bewaar</Button>
             </>
           ) : (
-            "Nog geen data"
+            ""
           )}
         </div>
       </div>
