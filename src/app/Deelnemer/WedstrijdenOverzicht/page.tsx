@@ -52,19 +52,19 @@ const page = async () => {
                         <Button className="bg-green-800 text-white" asChild>
                           <Link
                             href={`Deelnemer/WedstrijdUitslag/${wedstrijd.id}`}
-                            className="flex justify-center items-center gap-2 ml-0"
+                            className="flex justify-center items-center gap-2 ml-0 bg-green-700 w-full"
                             title="Uitslag Verwerken"
                           >
                             Uitslag
                           </Link>
                         </Button>
                       ) : (
-                        <Button disabled variant="outline">
+                        <Button disabled variant="outline" className="dark:text-white w-full">
                           Nog niet verwerkt
                         </Button>
                       )
                     ) : (
-                      <Button disabled variant="outline">
+                      <Button disabled variant="outline" className="dark:text-white w-full">
                         Nog niet gereden
                       </Button>
                     )}

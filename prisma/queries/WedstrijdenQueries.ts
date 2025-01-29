@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import db from "../prisma";
 import { GetRennerByIdQuery } from "./RennerQueries";
 
@@ -31,5 +32,7 @@ export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
 
   }
   await db.$executeRaw`UPDATE public.wedstrijden set afgesloten = TRUE where id=${data.wedstrijdid}`
+  revalidatePath(`/Admin/VerwerkWedstrijd/${data.wedstrijdid}`)
+  revalidatePath('/Deelnemer/WedstrijdenOverzicht')
   return true;
 }

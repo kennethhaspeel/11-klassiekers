@@ -15,9 +15,8 @@ import { DateToDDMMYYYY, DatumVoorbij } from "@/components/DatumFuncties";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 const page = async () => {
-  const { getUser, isAuthenticated } = getKindeServerSession();
-  const user = getUser();
-  console.log(user)
+  const { isAuthenticated } = getKindeServerSession();
+
   const auth = await isAuthenticated();
   if (!auth) {
     return <GeenToegang />;
@@ -72,7 +71,7 @@ const page = async () => {
                         </Button>
                       )
                     ) : (
-                      <Button disabled variant="outline" className="w-full">
+                      <Button disabled variant="outline" className="w-full dark:text-white">
                         Nog niet gereden
                       </Button>
                     )}
