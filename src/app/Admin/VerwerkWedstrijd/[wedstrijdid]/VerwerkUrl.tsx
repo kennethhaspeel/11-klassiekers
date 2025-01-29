@@ -2,7 +2,7 @@
 import { ExtractDataUrl } from "@/components/ExtractUrlData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, {   useActionState, useState } from "react";
+import React, { useActionState, useState } from "react";
 import {
   Table,
   TableBody,
@@ -18,40 +18,41 @@ interface uitslagInterface {
   positie: number;
   naam: string;
 }
-interface Params{
-  wedstrijdid:number
+interface Params {
+  wedstrijdid: number;
 }
-const VerwerkUrl = ({wedstrijdid}:Params) => {
-  console.log(wedstrijdid)
+const VerwerkUrl = ({ wedstrijdid }: Params) => {
+  console.log(wedstrijdid);
   const [loading, setLoading] = useState<boolean>(false);
-  const [url, setUrl] = useState<string | null>("https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result");
+  const [url, setUrl] = useState<string | null>(
+    "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
+  );
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
- const [error, action, isPending] = useActionState(
-  PostUitslagWedstrijdAction,
+  const [error, action, isPending] = useActionState(
+    PostUitslagWedstrijdAction,
     null
   );
   const getData = async () => {
     setLoading(true);
     setUitslag(null);
 
-
     const data: uitslagInterface[] = await ExtractDataUrl(url);
     setUitslag(data);
-    setLoading(false)
+    setLoading(false);
   };
 
-  const saveData = async()=>{
-    console.log(uitslag)
-        const formData = new FormData();
-    formData.append("wedstrijdid",wedstrijdid.toString())
-    formData.append("uitslag",JSON.stringify(uitslag))
-    action(formData)
-
-  }
+  const saveData = async () => {
+    console.log(uitslag);
+    const formData = new FormData();
+    formData.append("wedstrijdid", wedstrijdid.toString());
+    formData.append("uitslag", JSON.stringify(uitslag));
+    action(formData);
+  };
   return (
     <>
-    {error ? <p>{error}</p>:<p></p>}
+      {error ? <p>{error}</p> : <p></p>}
       <div className="flex flex-col w-full">
+      {isPending ? <p>bezig</p> : <p>niet bezig</p>}
         <div>
           <form className="flex flex-row w-full gap-3">
             <Input
@@ -78,9 +79,9 @@ const VerwerkUrl = ({wedstrijdid}:Params) => {
         </div>
         {uitslag == null && loading ? (
           <div className="grid grid-col-1 text-2xl justify-items-center w-full gap-4">
-            <Loader2 className="animate-spin text-red-600" size={40}/>
-            <Loader2 className="animate-spin text-green-600"  size={40}/>
-            <Loader2 className="animate-spin text-cyan-600"  size={40}/>
+            <Loader2 className="animate-spin text-red-600" size={40} />
+            <Loader2 className="animate-spin text-green-600" size={40} />
+            <Loader2 className="animate-spin text-cyan-600" size={40} />
           </div>
         ) : (
           ""
@@ -104,7 +105,9 @@ const VerwerkUrl = ({wedstrijdid}:Params) => {
                   ))}
                 </TableBody>
               </Table>
-              <Button type="button" onClick={saveData}>Bewaar</Button>
+              <Button type="button" onClick={saveData}>
+                Bewaar
+              </Button>
             </>
           ) : (
             ""
