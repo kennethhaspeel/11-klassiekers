@@ -2,7 +2,7 @@
 import { ExtractDataUrl } from "@/components/ExtractUrlData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useActionState, useState } from "react";
+import React, { startTransition, useActionState, useState } from "react";
 import {
   Table,
   TableBody,
@@ -22,13 +22,12 @@ interface Params {
   wedstrijdid: number;
 }
 const VerwerkUrl = ({ wedstrijdid }: Params) => {
-  console.log(wedstrijdid);
   const [loading, setLoading] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(
     "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
   );
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
-  const [error, action, isPending] = useActionState(
+  const [error, action,  isPending] = useActionState(
     PostUitslagWedstrijdAction,
     null
   );
@@ -46,7 +45,8 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
     const formData = new FormData();
     formData.append("wedstrijdid", wedstrijdid.toString());
     formData.append("uitslag", JSON.stringify(uitslag));
-    action(formData);
+    startTransition(()=>{action(formData)});
+    setUitslag(null)
   };
   return (
     <>
@@ -105,9 +105,19 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
                   ))}
                 </TableBody>
               </Table>
-              <Button type="button" onClick={saveData}>
-                Bewaar
-              </Button>
+              {
+                isPending ? (
+                  <Button disabled>
+                  <Loader2 className="animate-spin" />
+                  Bewaren
+                </Button>
+                ) : (
+                  <Button type="button" onClick={saveData}>
+                  Bewaar
+                </Button>
+                )
+              }
+
             </>
           ) : (
             ""
