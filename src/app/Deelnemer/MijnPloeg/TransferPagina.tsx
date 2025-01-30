@@ -44,7 +44,7 @@ const TransferPagina = ({
       <div className="flex flex-col w-full">
         <div className="p-2 flex flex-row align-middle">
           <div>
-            <h2 className="text-2xl">Basisselectie &quot;{ploegnaam}&quot;</h2>
+            <h2 className="text-2xl">Selectie &quot;{ploegnaam}&quot;</h2>
           </div>
           <div className="ms-4">
             <SetMetFoto

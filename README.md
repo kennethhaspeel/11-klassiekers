@@ -15,3 +15,6 @@ Dit is een project voor een vriendschappelijke pronostiek voor 11 voorjaarsklass
 -   🔗  [TanStack Table](https://tanstack.com/table/latest)
 -   🔗  [Vercel](https://vercel.com/home)
 
+# To Do
+- schiftingsvraag toevoegen aan 1ste login
+- registreerknop weg op 1ste wedstrijd

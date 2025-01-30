@@ -39,6 +39,21 @@ const AnonMenu = () => {
                   <h2> 11 Klassiekers</h2>
                 </Link>
               </Button>
+              <Button
+                variant="ghost"
+                size="default"
+                aria-label="reglement"
+                className="rounded-full"
+                asChild
+              >
+                <Link
+                  href="/Reglement"
+                  className="flex justify-center items-center gap-2 ml-0"
+                  title="Home"
+                >
+                  Reglement
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="flex items-end">
@@ -106,6 +121,20 @@ const AnonMenu = () => {
                     title="Home"
                   >
                     Home
+                  </Link>
+                </Button>
+                <Button
+                  className="w-full py-2 mt-2"
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                >
+                  <Link
+                    href="/Reglement"
+                    className="flex justify-center items-center gap-2 ml-0"
+                    title="Reglement"
+                  >
+                    Reglement
                   </Link>
                 </Button>
                 <Button className="w-full py-2" asChild>
