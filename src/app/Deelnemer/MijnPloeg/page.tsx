@@ -30,7 +30,6 @@ const MaakSelectie = async () => {
   if (!deelnemer) {
     return <p>Fout bij laden van pagina</p>;
   }
-  console.log(periode);
   switch (periode) {
     case 1:
       return (

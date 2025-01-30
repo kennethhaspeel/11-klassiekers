@@ -51,7 +51,7 @@ const page = async () => {
                       wedstrijd.afgesloten ? (
                         <Button className="bg-green-800 text-white" asChild>
                           <Link
-                            href={`Deelnemer/WedstrijdUitslag/${wedstrijd.id}`}
+                            href={`/Deelnemer/WedstrijdUitslag/${wedstrijd.id}`}
                             className="flex justify-center items-center gap-2 ml-0 bg-green-700 w-full"
                             title="Uitslag Verwerken"
                           >

@@ -4,14 +4,14 @@ import db from "../prisma";
 
 export async function ZoekRennersQuery(zoekterm:string){
     const z = zoekterm.split(' ')
-    const zoektermen = z.join(' & ')
-    console.log(zoektermen)
     const result = await db.renner.findMany({
         where: {
-            naam:{
-                search:zoektermen,
-                mode:'insensitive'
-            }
+            AND: z.map(term=>({
+                naam:{
+                    contains:term,
+                    mode:'insensitive'
+                }
+            }))
         },
         include:{
             team:true
@@ -20,7 +20,7 @@ export async function ZoekRennersQuery(zoekterm:string){
             naam:'asc'
         }
     })
-    return result
+return result
 }
 
 export async function GetRennerByIdQuery(naam:string){

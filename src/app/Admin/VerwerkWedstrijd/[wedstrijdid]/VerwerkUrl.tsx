@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
 import { PostUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
+import DeleteDataButton from "./DeleteDataButton";
 
 interface uitslagInterface {
   positie: number;
@@ -27,10 +28,11 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
     "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
   );
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
-  const [error, action,  isPending] = useActionState(
+  const [error,action,  isPending] = useActionState(
     PostUitslagWedstrijdAction,
     null
   );
+
   const getData = async () => {
     setLoading(true);
     setUitslag(null);
@@ -48,11 +50,15 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
     startTransition(()=>{action(formData)});
     setUitslag(null)
   };
+
   return (
     <>
       {error ? <p>{error}</p> : <p></p>}
       <div className="flex flex-col w-full">
       {isPending ? <p>bezig</p> : <p>niet bezig</p>}
+      <div>
+        <DeleteDataButton wedstrijdid={wedstrijdid}/>
+      </div>
         <div>
           <form className="flex flex-row w-full gap-3">
             <Input
