@@ -15,7 +15,7 @@ const Reglement = async () => {
   const lijst: Wedstrijd[] = await GetWedstrijden();
   return (
     <>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full m-4">
         <Alert className="bg-gray-400 w-full p-4">
           <AlertTitle>
             <span className="text-2xl">Reglement</span>
@@ -48,6 +48,21 @@ const Reglement = async () => {
             </TableBody>
           </Table>
         </div>
+        <div className="p-2 w-full">
+        <Alert className="bg-gray-600 w-full p-4">
+          <AlertTitle>
+            Puntentelling
+          </AlertTitle>
+            <AlertDescription>
+              <p>
+                De puntentelling is de grootste verandering bij andere edities en is zo simpel als maar kan
+              </p>
+              <p>
+                De top 50 krijgt hun positie als punten en de bedoeling is dus om <span className="font-semibold underline underline-offset-4 decoration-4 decoration-sky-200">zo weinig mogelijk punten</span> te verzamelen
+              </p>
+            </AlertDescription>
+          </Alert>
+        </div>
         <div className="w-full p-2">
           Er zijn geen dagprijzen. Enkel het eindresultaat telt.
           <br />U beschikt over drie <strong>inkomende</strong> transfers.
@@ -75,7 +90,7 @@ const Reglement = async () => {
         </div>
         <div className="py-2">Verdeling van de pot gebeurt als volgt:</div>
         <div className="pb-2">
-          <ul className="list-disc">
+          <ul className="list-disc list-inside">
             <li>Eerste plaats: 50% van de pot met een maximum van 250 euro</li>
             <li>Tweede plaats: 30% van de pot met een maximum van 150 euro</li>
             <li>Derde plaats: 20% van de pot met een maximum van 100 euro</li>

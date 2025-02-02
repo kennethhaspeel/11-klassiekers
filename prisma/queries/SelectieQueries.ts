@@ -1,6 +1,9 @@
 "use server";
 
+import { Wedstrijd } from "@prisma/client";
 import db from "../prisma";
+import { GetWedstrijden } from "./WedstrijdenQueries";
+import { CheckPeriode } from "@/components/DatumFuncties";
 
 export async function GetSelectieByUserId(id: string) {
   const result = await db.selectie.findMany({
@@ -14,26 +17,55 @@ export async function GetSelectieByUserId(id: string) {
         },
       },
     },
+    orderBy:{
+      renner:{
+        naam:'asc'
+      }
+    }
   });
 
   return result;
 }
 
-interface ToevoegenAanSelectieInterface{
-  deelnemerid:string;
-  rennerid:number
+export async function GetPeriodeAction() {
+  const result: Wedstrijd[] = await GetWedstrijden();
+  const periode = CheckPeriode(result);
+  return periode;
 }
-export async function ToevoegenAanSelectie({deelnemerid,rennerid}:ToevoegenAanSelectieInterface){
-  console.log(`Start saving query with deelnemerid ${deelnemerid} and rennerid ${rennerid} and date ${new Date()}`)
+
+export async function GetAlleSelectiesQuery() {
+  const result = await db.selectie.findMany({
+    where: {
+      datum_uit: { not: null },
+    },
+    include: {
+      renner: true,
+    },
+  });
+
+  return result;
+}
+
+interface ToevoegenAanSelectieInterface {
+  deelnemerid: string;
+  rennerid: number;
+}
+export async function ToevoegenAanSelectie({
+  deelnemerid,
+  rennerid,
+}: ToevoegenAanSelectieInterface) {
+  console.log(
+    `Start saving query with deelnemerid ${deelnemerid} and rennerid ${rennerid} and date ${new Date()}`
+  );
   const result = await db.selectie.create({
-    data:{
+    data: {
       deelnemerid: deelnemerid,
-      rennerid:Number(rennerid),
-      datum_in: new Date()
-    }
-  })
-  console.log(`Saving ended with id ${result.id}`)
-  return result
+      rennerid: Number(rennerid),
+      datum_in: new Date(),
+    },
+  });
+  console.log(`Saving ended with id ${result.id}`);
+  return result;
 }
 
 export async function DeleteFromSelectie(selectieid: number) {
@@ -51,8 +83,8 @@ export async function TransferUitSelectie(selectieid: number) {
       id: selectieid,
     },
     data: {
-      datum_uit: new Date()
-    }
+      datum_uit: new Date(),
+    },
   });
   return result;
 }

@@ -2,7 +2,7 @@
 import { ExtractDataUrl } from "@/components/ExtractUrlData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { startTransition, useActionState, useState } from "react";
+import {  useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,9 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Loader2 } from "lucide-react";
-import { PostUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
-import DeleteDataButton from "./DeleteDataButton";
+
+import SpinnersBlok from "@/components/spinners";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { SaveUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
 
 interface uitslagInterface {
   positie: number;
@@ -28,38 +29,61 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
     "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
   );
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
-  const [error,action,  isPending] = useActionState(
-    PostUitslagWedstrijdAction,
-    null
-  );
+  const [error, setError] = useState<string | null>(null);
+  const [uitslagBewaard, setUitslagBewaard] = useState<boolean>(false);
 
   const getData = async () => {
     setLoading(true);
-    setUitslag(null);
-
     const data: uitslagInterface[] = await ExtractDataUrl(url);
     setUitslag(data);
     setLoading(false);
   };
 
   const saveData = async () => {
-    console.log(uitslag);
-    const formData = new FormData();
-    formData.append("wedstrijdid", wedstrijdid.toString());
-    formData.append("uitslag", JSON.stringify(uitslag));
-    startTransition(()=>{action(formData)});
-    setUitslag(null)
+    setLoading(true);
+    const resultaat = await SaveUitslagWedstrijdAction({
+      wedstrijdid: wedstrijdid,
+      resultaat: uitslag!,
+    });
+    if (resultaat.error) {
+      setError(resultaat.error);
+    } else {
+      setUitslagBewaard(true);
+    }
+    setLoading(false);
   };
+  if (loading) {
+    return <SpinnersBlok />;
+  }
+  if (error) {
+    return (
+      <Alert className="bg-red-600">
+        <AlertTitle>Fout bij Bewaren</AlertTitle>
+        <AlertDescription>
+          Volgende fout deed zich voor: {error}
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (uitslagBewaard) {
+    return (
+      <Alert className="bg-green-600">
+        <AlertTitle>Alles Bewaard</AlertTitle>
+        <AlertDescription>
+          De uitslag voor deze wedstrijd werd bewaard
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <>
-      {error ? <p>{error}</p> : <p></p>}
       <div className="flex flex-col w-full">
-      {isPending ? <p>bezig</p> : <p>niet bezig</p>}
-      <div>
-        <DeleteDataButton wedstrijdid={wedstrijdid}/>
-      </div>
-        <div>
+        {/* <div>
+              <DeleteDataButton wedstrijdid={wedstrijdid} />
+            </div> */}
+        <div className="w-full">
           <form className="flex flex-row w-full gap-3">
             <Input
               type="text"
@@ -83,15 +107,7 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
             Overzicht
           </h2>
         </div>
-        {uitslag == null && loading ? (
-          <div className="grid grid-col-1 text-2xl justify-items-center w-full gap-4">
-            <Loader2 className="animate-spin text-red-600" size={40} />
-            <Loader2 className="animate-spin text-green-600" size={40} />
-            <Loader2 className="animate-spin text-cyan-600" size={40} />
-          </div>
-        ) : (
-          ""
-        )}
+        {uitslag == null && loading ? <SpinnersBlok /> : ""}
         <div className="w-full">
           {uitslag ? (
             <>
@@ -111,18 +127,10 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
                   ))}
                 </TableBody>
               </Table>
-              {
-                isPending ? (
-                  <Button disabled>
-                  <Loader2 className="animate-spin" />
-                  Bewaren
-                </Button>
-                ) : (
-                  <Button type="button" onClick={saveData}>
+
+                <Button type="button" onClick={saveData}>
                   Bewaar
                 </Button>
-                )
-              }
 
             </>
           ) : (

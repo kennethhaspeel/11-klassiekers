@@ -38,6 +38,7 @@ export async function InsertDeelnemerAction(
     metFoto:false,
     createdAt: new Date(),
     updatedAt: new Date(),
+    bevestigd:false
   };
 
   await InsertDeelnemer(d);

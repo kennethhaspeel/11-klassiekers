@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import {
   DeleteFromSelectie,
+  GetAlleSelectiesQuery,
+  GetSelectieByUserId,
   ToevoegenAanSelectie,
   TransferUitSelectie,
 } from "../queries/SelectieQueries";
@@ -10,22 +11,45 @@ import {
 interface VerwijderProps {
   selectieid: number;
   periode: number;
+  deelnemerid:string;
 }
 
-export async function VerwijderUitSelectieAction(
-  previousState: unknown,
-  { selectieid, periode }: VerwijderProps
-) {
+export async function VerwijderSelectieAction({ selectieid, periode,deelnemerid }: VerwijderProps){
   try {
     if (periode === 1) {
       await DeleteFromSelectie(selectieid);
     } else {
       await TransferUitSelectie(selectieid);
     }
+    const selecties = await GetSelectieByUserId(deelnemerid)
+    return {data:selecties,error:null}
   } catch (error: unknown) {
-    console.log(typeof error);
-    return "fout bij bewaren";
+    return { data: null, error: error };
   }
+
+}
+interface ToevoegenProps {
+  deelnemerid: string;
+  rennerid: number;
+}
+
+export async function ToevoegenSelectieAction({deelnemerid,rennerid}:ToevoegenProps) {
+  try{
+    await ToevoegenAanSelectie({
+      deelnemerid: deelnemerid,
+      rennerid: rennerid,
+    });
+    const selecties = await GetSelectieByUserId(deelnemerid)
+    return {data:selecties,error:null}
+  }catch (error: unknown) {
+    console.log(typeof error);
+    return { data: null, error: error };
+  }
+}
+
+export async function GetAlleSelectiesActions(){
+  const selecties = await GetAlleSelectiesQuery()
+  return selecties
 }
 
 export async function ToevoegenAanSelectieAction(
@@ -42,7 +66,7 @@ export async function ToevoegenAanSelectieAction(
       deelnemerid: deelnemerid,
       rennerid: rennerid,
     });
-    revalidatePath("/Deelnemer/MijnPloeg");
+    //revalidatePath("/Deelnemer/MijnPloeg");
     return { data: result, error: null };
   } catch (error: unknown) {
     if (error instanceof Error) {

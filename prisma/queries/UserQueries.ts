@@ -9,7 +9,7 @@ export async function GetUserById(KindeId: string) {
       id: KindeId,
     },
   });
-  return result;
+  return result!;
 }
 
 export async function InsertDeelnemer(deelnemer: Deelnemer) {
