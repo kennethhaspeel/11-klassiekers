@@ -45,6 +45,7 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
       wedstrijdid: wedstrijdid,
       resultaat: uitslag!,
     });
+    console.log(resultaat)
     if (resultaat.error) {
       setError(resultaat.error);
     } else {

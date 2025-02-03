@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DateToDDMMYYYY, DatumVoorbij } from "@/components/DatumFuncties";
+import { DateToDDMMYYYY,  KlaarVoorUitslag } from "@/components/DatumFuncties";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 const page = async () => {
@@ -21,7 +21,12 @@ const page = async () => {
   if (!auth) {
     return <GeenToegang />;
   }
-  const lijst = await GetWedstrijden();
+
+  const lijst = await GetWedstrijden()
+
+
+  //   const periode = await GetPeriodeAction();
+  // const lijst = await GetWedstrijden();
 
   return (
     <>
@@ -48,7 +53,7 @@ const page = async () => {
                   <TableCell>{DateToDDMMYYYY(wedstrijd.datum)}</TableCell>
                   <TableCell>{wedstrijd.naam}</TableCell>
                   <TableCell className="text-center">
-                    {DatumVoorbij(wedstrijd.datum) ? (
+                    {KlaarVoorUitslag(wedstrijd.datum) ? (
                       wedstrijd.afgesloten ? (
                         <Button className="bg-green-500 text-white w-full" asChild>
                           <Link

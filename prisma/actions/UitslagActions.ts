@@ -18,11 +18,11 @@ export async function SaveUitslagWedstrijdAction({
   resultaat,
 }: SaveUitslagModel) {
   try {
-    const result = await PostUitslagWedstrijdQuery({
+    await PostUitslagWedstrijdQuery({
       wedstrijdid: wedstrijdid,
       uitslag: resultaat,
     });
-    return { data: result, error: null };
+    return { data: "ok", error: null };
   } catch (error: unknown) {
     return { data: null, error: error as string };
   }

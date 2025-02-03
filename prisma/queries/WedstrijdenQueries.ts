@@ -53,20 +53,27 @@ interface BewaarUitslagInterface {
   }[];
 }
 export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
-  for (const rij of data.uitslag) {
-    const renner = await GetRennerByIdQuery(rij.naam);
-    if (renner) {
-      await db.$executeRaw`insert into public.uitslagen(rennerid,wedstrijdid,positie)values(${Number(
-        renner!.id
-      )},${Number(data.wedstrijdid)},${Number(rij.positie)})`;
-    } else {
-      console.log(rij.naam);
+  try {
+    for (const rij of data.uitslag) {
+      console.log(rij)
+      const renner = await GetRennerByIdQuery(rij.naam);
+      if (renner) {
+        await db.$executeRaw`insert into public.uitslagen(rennerid,wedstrijdid,positie)values(${Number(
+          renner!.id
+        )},${Number(data.wedstrijdid)},${Number(rij.positie)})`;
+      } else {
+        console.log(rij.naam);
+      }
     }
+
+    await db.$executeRaw`UPDATE public.wedstrijden SET afgesloten = TRUE WHERE id=${Number(data.wedstrijdid)}`;
+
+    // revalidatePath(`/Admin/VerwerkWedstrijd/${data.wedstrijdid}`);
+    // revalidatePath("/Deelnemer/WedstrijdenOverzicht");
+    
+  } catch (exception: unknown) {
+    console.log(exception as string);
   }
-  await db.$executeRaw`UPDATE public.wedstrijden set afgesloten = TRUE where id=${data.wedstrijdid}`;
-  revalidatePath(`/Admin/VerwerkWedstrijd/${data.wedstrijdid}`);
-  revalidatePath("/Deelnemer/WedstrijdenOverzicht");
-  return true;
 }
 
 export async function DeleteResultatenVanWedstrijdQuery(wedstrijdid: number) {

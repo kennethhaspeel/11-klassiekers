@@ -25,15 +25,20 @@ export const CheckPeriode = (wedstrijden: Wedstrijd[]) => {
   const vandaag = new Date();
   const dateToCheck = vandaag.toISOString().split("T")[0];
 
-  if(datumArr.includes(dateToCheck)){return 2}
-
+  if (datumArr.includes(dateToCheck)) {
+    return 2;
+  }
 
   // check of eerste selectie
   if (!!!DatumVoorbij(new Date(datumArr[0]))) {
-    return 1; 
+    return 1;
   }
 
-return 3
-
-
+  return 3;
 };
+
+export const KlaarVoorUitslag=(datum:Date)=>{
+  const dateToCheck = new Date(datum.toISOString().split("T")[0]);
+  const vandaag = new Date((new Date()).toISOString().split("T")[0]);
+  return dateToCheck <= vandaag
+}
