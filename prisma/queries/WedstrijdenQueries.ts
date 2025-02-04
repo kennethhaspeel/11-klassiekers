@@ -14,18 +14,13 @@ export async function GetWedstrijden() {
 }
 
 export async function GetWedstrijdByIdQuery(wedstrijdid: number) {
-  try {
     const result = await db.wedstrijd.findUnique({
       where: {
         id: Number(wedstrijdid),
       },
     });
     return result;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log("Error: ", error.stack);
-    }
-  }
+
 }
 
 export async function GetUitslagByWedstrijdIdQuery(wedstrijdid:number){
