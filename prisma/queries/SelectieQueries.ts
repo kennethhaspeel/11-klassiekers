@@ -4,6 +4,8 @@ import { Wedstrijd } from "@prisma/client";
 import db from "../prisma";
 import { GetWedstrijden } from "./WedstrijdenQueries";
 import { CheckPeriode } from "@/components/DatumFuncties";
+import { Prisma } from "@prisma/client";
+
 
 export async function GetSelectieByUserId(id: string) {
   const result = await db.selectie.findMany({
@@ -36,7 +38,7 @@ export async function GetPeriodeAction() {
 export async function GetAlleSelectiesQuery() {
   const result = await db.selectie.findMany({
     where: {
-      datum_uit: { not: null },
+      datum_uit: null ,
     },
     include: {
       renner: true,
@@ -44,6 +46,20 @@ export async function GetAlleSelectiesQuery() {
   });
 
   return result;
+}
+
+export type DeelnemersMetSelectie = Prisma.PromiseReturnType<typeof GetUserMetSelectiesQuery>
+export async function GetUserMetSelectiesQuery(){
+  const result = await db.deelnemer.findMany({
+    include:{
+      Selectie:{
+        include:{
+          renner:true
+        }
+      }
+    }
+  })
+  return result
 }
 
 interface ToevoegenAanSelectieInterface {

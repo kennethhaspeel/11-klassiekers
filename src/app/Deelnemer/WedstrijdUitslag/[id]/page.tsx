@@ -1,4 +1,4 @@
-import {  Wedstrijd } from "@prisma/client";
+import {  Uitslag } from "@prisma/client";
 import { GetUitslagByWedstrijdidAction } from "../../../../../prisma/actions/UitslagActions";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import GeenToegang from "@/components/GeenToegang";
@@ -40,7 +40,7 @@ const WedstrijdUitslag = async ({ params }: { params: Params }) => {
 
   const { id } = await params;
 
-  const getWedstrijd : Promise<Wedstrijd |null |undefined> = GetUitslagByWedstrijdidAction(id)
+  const getWedstrijd : Promise<Uitslag[] |null |undefined> = GetUitslagByWedstrijdidAction(id)
   const getResultaat: Promise<uitslagModel |null |undefined> = GetRennersPerUitslag(id)
 
   const [wedstrijd,uitslag] = await Promise.all([getWedstrijd,getResultaat])
@@ -52,7 +52,7 @@ const WedstrijdUitslag = async ({ params }: { params: Params }) => {
         {wedstrijd ? (
           <>
             <div className="w-full flex">
-              <div className="text-2xl mx-auto p-4">{wedstrijd.naam}</div>
+              {/* <div className="text-2xl mx-auto p-4">{wedstrijd.naam}</div> */}
             </div>
             <div className="flex w-1/2 mx-auto align-items-center">
               {uitslag ? (

@@ -3,6 +3,7 @@
 import { Deelnemer } from "@prisma/client";
 import { InsertDeelnemer, UpdateMetFoto } from "../queries/UserQueries";
 import { z } from "zod";
+import { GetUserMetSelectiesQuery } from "../queries/SelectieQueries";
 
 const NieuweDeelnemerSchema = z.object({
   kindeid: z.string().min(1),
@@ -35,10 +36,10 @@ export async function InsertDeelnemerAction(
     email: form.get("email") as string,
     telefoon: form.get("telefoon") as string,
     ploegnaam: form.get("ploegnaam") as string,
-    metFoto:false,
+    metFoto: false,
     createdAt: new Date(),
     updatedAt: new Date(),
-    bevestigd:false
+    bevestigd: false,
   };
 
   await InsertDeelnemer(d);
@@ -46,15 +47,23 @@ export async function InsertDeelnemerAction(
 }
 
 interface updateMetFotoInterface {
-  deelnemerid:string;
-  metFoto:boolean;
+  deelnemerid: string;
+  metFoto: boolean;
 }
-export async function updateMetFotoAction(previousState:unknown,{deelnemerid,metFoto}:updateMetFotoInterface){
+export async function updateMetFotoAction(
+  previousState: unknown,
+  { deelnemerid, metFoto }: updateMetFotoInterface
+) {
   try {
-    await UpdateMetFoto(deelnemerid,metFoto)
-  }
-  catch (error: unknown) {
+    await UpdateMetFoto(deelnemerid, metFoto);
+  } catch (error: unknown) {
     console.log(typeof error);
     return "fout bij bewaren";
   }
+}
+
+export async function GetUserMetSelectiesAction() {
+
+    const data = await GetUserMetSelectiesQuery();
+    return data;
 }

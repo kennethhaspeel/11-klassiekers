@@ -28,6 +28,15 @@ export async function GetWedstrijdByIdQuery(wedstrijdid: number) {
   }
 }
 
+export async function GetUitslagByWedstrijdIdQuery(wedstrijdid:number){
+  const result = await db.uitslag.findMany({
+    where:{
+      wedstrijdid: Number(wedstrijdid)
+    },
+  })
+  return result
+}
+
 export async function GetRennersPerUitslag(wedstrijdid: number) {
   try {
     const result = await db.uitslag.findMany({

@@ -2,7 +2,7 @@
 
 import {
   DeleteResultatenVanWedstrijdQuery,
-  GetWedstrijdByIdQuery,
+  GetUitslagByWedstrijdIdQuery,
   PostUitslagWedstrijdQuery,
 } from "../queries/WedstrijdenQueries";
 
@@ -58,6 +58,6 @@ export async function DeleteUitslagWedstrijdenAction(
 }
 
 export async function GetUitslagByWedstrijdidAction(wedstrijdid: number) {
-  const result = await GetWedstrijdByIdQuery(wedstrijdid);
+  const result = await GetUitslagByWedstrijdIdQuery(wedstrijdid);
   return result;
 }

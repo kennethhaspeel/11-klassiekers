@@ -2,7 +2,7 @@
 import { ExtractDataUrl } from "@/components/ExtractUrlData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {  useState } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import {useRouter} from 'next/navigation'
 import SpinnersBlok from "@/components/spinners";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SaveUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
@@ -24,6 +24,7 @@ interface Params {
   wedstrijdid: number;
 }
 const VerwerkUrl = ({ wedstrijdid }: Params) => {
+  const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(
     "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
@@ -45,36 +46,41 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
       wedstrijdid: wedstrijdid,
       resultaat: uitslag!,
     });
-    console.log(resultaat)
+    setLoading(false);
     if (resultaat.error) {
       setError(resultaat.error);
     } else {
       setUitslagBewaard(true);
+      router.push(`/Admin/VerwerkTussenstand/${wedstrijdid}`)
     }
-    setLoading(false);
+    
   };
   if (loading) {
     return <SpinnersBlok />;
   }
   if (error) {
     return (
-      <Alert className="bg-red-600">
-        <AlertTitle>Fout bij Bewaren</AlertTitle>
-        <AlertDescription>
-          Volgende fout deed zich voor: {error}
-        </AlertDescription>
-      </Alert>
+      <div className="flex flex-col">
+        <Alert className="bg-red-600">
+          <AlertTitle>Fout bij Bewaren</AlertTitle>
+          <AlertDescription>
+            Volgende fout deed zich voor: {error}
+          </AlertDescription>
+        </Alert>
+      </div>
     );
   }
 
   if (uitslagBewaard) {
     return (
-      <Alert className="bg-green-600">
-        <AlertTitle>Alles Bewaard</AlertTitle>
-        <AlertDescription>
-          De uitslag voor deze wedstrijd werd bewaard
-        </AlertDescription>
-      </Alert>
+      <div className="flex flex-col">
+        <Alert className="bg-green-600">
+          <AlertTitle>Alles Bewaard</AlertTitle>
+          <AlertDescription>
+            De uitslag voor deze wedstrijd werd bewaard
+          </AlertDescription>
+        </Alert>
+      </div>
     );
   }
 
@@ -129,10 +135,9 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
                 </TableBody>
               </Table>
 
-                <Button type="button" onClick={saveData}>
-                  Bewaar
-                </Button>
-
+              <Button type="button" onClick={saveData}>
+                Bewaar
+              </Button>
             </>
           ) : (
             ""

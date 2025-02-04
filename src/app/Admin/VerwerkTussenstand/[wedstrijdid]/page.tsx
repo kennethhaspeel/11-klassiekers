@@ -1,28 +1,38 @@
-import React from "react";
 import { GetUitslagByWedstrijdidAction } from "../../../../../prisma/actions/UitslagActions";
-import { Renner, Selectie, Wedstrijd } from "@prisma/client";
-import { GetAlleSelectiesActions } from "../../../../../prisma/actions/SelectieActions";
+import { Uitslag } from "@prisma/client";
 
-type SelectieModel = Selectie & { renner: Renner };
+import { GetUserMetSelectiesAction } from "../../../../../prisma/actions/UserActions";
+import { DeelnemersMetSelectie } from "../../../../../prisma/queries/SelectieQueries";
+
 type Params = Promise<{ wedstrijdid: number }>;
 
 const VerwerkTussenstand = async ({ params }: { params: Params }) => {
   const { wedstrijdid } = await params;
   console.log(wedstrijdid);
 
-  const getWedstrijd: Promise<Wedstrijd | null | undefined> =
+  const getUitslag: Promise<Uitslag[] | null | undefined> =
     GetUitslagByWedstrijdidAction(wedstrijdid);
-  const getSelecties: Promise<SelectieModel[] | null | undefined> =
-    GetAlleSelectiesActions();
+  const getSelecties: Promise<DeelnemersMetSelectie> =
+    GetUserMetSelectiesAction();
 
-  const [wedstrijd, selecties] = await Promise.all([
-    getWedstrijd,
-    getSelecties,
-  ]);
-  console.log(wedstrijd);
+  const [uitslag, selecties] = await Promise.all([getUitslag, getSelecties]);
+  console.log(uitslag);
   console.log(selecties);
 
-  return <div>page</div>;
+  return (
+    <>
+      {selecties
+        ? selecties.map((deelnemer) => (
+            <>
+              <p key={deelnemer.id}>{deelnemer.ploegnaam}</p>
+              {deelnemer.Selectie.map((renner) => (
+                <p key={renner.id}>{renner.renner.naam}</p>
+              ))}
+            </>
+          ))
+        : ""}
+    </>
+  );
 };
 
 export default VerwerkTussenstand;
