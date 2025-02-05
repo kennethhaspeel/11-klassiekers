@@ -62,7 +62,7 @@ export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
       console.log(rij)
       const renner = await GetRennerByIdQuery(rij.naam);
       if (renner) {
-        await db.$executeRaw`insert into public.uitslagen(rennerid,wedstrijdid,positie)values(${Number(
+        await db.$executeRaw`insert into public.uitslagen(rennerid,wedstrijdid,punten)values(${Number(
           renner!.id
         )},${Number(data.wedstrijdid)},${Number(rij.positie)})`;
       } else {

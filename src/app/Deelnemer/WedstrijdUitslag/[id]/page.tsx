@@ -27,7 +27,7 @@ type uitslagModel = ({
     id: number;
     rennerid: number;
     wedstrijdid: number;
-    positie: number;
+    punten: number;
 })[]
 
 const WedstrijdUitslag = async ({ params }: { params: Params }) => {
@@ -70,7 +70,7 @@ const WedstrijdUitslag = async ({ params }: { params: Params }) => {
                   <TableBody>
                     {uitslag.map((rij) => (
                     <TableRow key={rij.id}>
-                      <TableCell className="text-center">{rij.positie} </TableCell>
+                      <TableCell className="text-center">{rij.punten} </TableCell>
                       <TableCell>{rij.renner.naam}</TableCell></TableRow>
                   ))}
                   </TableBody>

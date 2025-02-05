@@ -14,12 +14,7 @@ import {
 import { Alert, AlertTitle } from "@/components/ui/alert";
 
 type Params = Promise<{ wedstrijdid: number }>;
-type uitslagoverzicht = {
-  deelnemerid: string;
-  rennerid: number;
-  punten: number;
-  wedstrijdid:number;
-};
+
 const VerwerkTussenstand = async ({ params }: { params: Params }) => {
   const { wedstrijdid } = await params;
 
@@ -30,23 +25,6 @@ const VerwerkTussenstand = async ({ params }: { params: Params }) => {
 
   const [uitslag, selecties] = await Promise.all([getUitslag, getSelecties]);
   
-  function BerekenPunten() {
-    const lijst:uitslagoverzicht[] = [];
-    selecties.map((u) => {
-      u.Selectie.map((deel) => {
-        const p = uitslag?.find((x) => x.rennerid == deel.rennerid)?.positie || 100
-        const punt: uitslagoverzicht = {
-          deelnemerid: deel.deelnemerid,
-          rennerid: deel.rennerid,
-          punten: p,
-          wedstrijdid: Number(wedstrijdid)
-        };
-        lijst.push(punt);
-      });
-    });
-    console.log(lijst)
-  }
-  BerekenPunten()
   return (
     <>
       <div className="w-full flex flex-col">
@@ -85,7 +63,7 @@ const VerwerkTussenstand = async ({ params }: { params: Params }) => {
                             </TableCell>
                             <TableCell className="text-white">
                               {uitslag?.find((x) => x.rennerid == sel.rennerid)
-                                ?.positie || 100}
+                                ?.punten || 100}
                             </TableCell>
                           </TableRow>
                         ))}
