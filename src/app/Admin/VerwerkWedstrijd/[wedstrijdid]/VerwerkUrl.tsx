@@ -17,7 +17,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SaveUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
 import { VerwerkTussenstandAction } from "../../../../../prisma/actions/TussenstandActions";
 
-
 interface uitslagInterface {
   positie: number;
   naam: string;
@@ -53,15 +52,13 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
     } else {
       setUitslagBewaard(true);
       const u = await VerwerkTussenstandAction(wedstrijdid);
+      if (u?.success) {
+        setUitslagVerwerkt(true);
+      } else {
+        setError(u!.message!);
+      }
       console.log(u);
     }
-    const u = await VerwerkTussenstandAction(wedstrijdid);
-    if (u?.success) {
-      setUitslagVerwerkt(true);
-    } else {
-      setError(u!.message!);
-    }
-    console.log(u);
     setLoading(false);
   };
   if (loading) {

@@ -54,6 +54,9 @@ export async function GetUserMetSelectiesQuery(){
   const result = await db.deelnemer.findMany({
     include:{
       Selectie:{
+        where:{
+          datum_uit:null
+        },
         include:{
           renner:true
         }
