@@ -1,5 +1,6 @@
 "use server";
 
+import { Prisma } from "@prisma/client";
 import { VerwerkTussenstandModel } from "../Models/VerwerkTussenStand";
 import db from "../prisma";
 
@@ -20,4 +21,18 @@ export async function VerwerkTussenstandQuery(
       return error.stack;
     }
   }
+}
+
+export type DeelnemerMetTussenstand = Prisma.PromiseReturnType<typeof GetTussenstandQuery>
+export async function GetTussenstandQuery(){
+  const result = await db.deelnemer.findMany({
+    include:{
+      Tussenstand: {
+        include:{
+          renner:true
+        }
+      }
+    }
+  })
+  return result
 }

@@ -25,7 +25,8 @@ export async function GetSelectieByUserId(id: string) {
       }
     }
   });
-
+// console.log(id)
+// console.log(result)
   return result;
 }
 

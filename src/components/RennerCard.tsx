@@ -38,7 +38,6 @@ interface Props {
   deelnemer: Deelnemer;
   metFoto: boolean;
   selectieOverzicht: boolean;
-  deelnemerid?: string;
 }
 const RennerCard = ({
   renner,
@@ -48,7 +47,7 @@ const RennerCard = ({
   periode,
   metFoto,
   selectieOverzicht,
-  deelnemerid,
+  deelnemer,
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [isBezig, setIsBezig] = useState<boolean>(false);
@@ -63,11 +62,12 @@ const RennerCard = ({
 
   const VerwijderUitSelectie = async () => {
     setIsBezig(true);
-    const result = await VerwijderSelectieAction({
+    const result =await VerwijderSelectieAction({
       selectieid: renner.id,
       periode: periode,
-      deelnemerid: deelnemerid!,
+      deelnemerid: deelnemer.id,
     });
+
     if (result.data) {
       setRenners(result.data as unknown as SelectieMetRenner[]);
     }
@@ -79,7 +79,7 @@ const RennerCard = ({
   const ToevoegenSelectie = async () => {
     setIsBezig(true);
     const result = await ToevoegenSelectieAction({
-      deelnemerid: deelnemerid!,
+      deelnemerid: deelnemer.id,
       rennerid: rennerdetail.id,
     });
     if (result.data) {
@@ -102,6 +102,7 @@ const RennerCard = ({
                   width={30}
                   height={30}
                   alt="vlag"
+                  style={{height:'auto',width:'auto'}}
                 />
               </div>
               <div>{rennerdetail.naam}</div>
@@ -121,7 +122,8 @@ const RennerCard = ({
                       src={`https://www.procyclingstats.com/${rennerdetail.foto}`}
                       width={100}
                       height={100}
-                      alt="vlag"
+                      alt="foto"
+                      style={{height:'auto',width:'auto'}}
                     />
                   ) : (
                     <></>

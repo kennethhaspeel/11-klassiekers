@@ -95,7 +95,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   asChild
                 >
                   <Link
-                    href="Deelnemer/tussenstand"
+                    href="/Deelnemer/Tussenstand"
                     className="flex justify-center items-center gap-2 ml-0"
                     title="tussenstand"
                   >
@@ -130,7 +130,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                       asChild
                     >
                       <Link
-                        href="Admin/deelnemers"
+                        href="/Admin/deelnemers"
                         className="flex justify-center items-center gap-2 ml-0"
                         title="Deelnemers"
                       >
@@ -262,7 +262,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   asChild
                 >
                   <Link
-                    href="Deelnemer/Tussenstand"
+                    href="/Deelnemer/Tussenstand"
                     className="flex justify-center items-center gap-2 ml-0"
                     title="tussenstand"
                   >

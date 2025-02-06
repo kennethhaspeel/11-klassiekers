@@ -26,6 +26,7 @@ export async function VerwijderSelectieAction({
       await TransferUitSelectie(selectieid);
     }
     const selecties = await GetSelectieByUserId(deelnemerid);
+    console.log(deelnemerid)
     return { data: selecties, error: null };
   } catch (error: unknown) {
     return { data: null, error: error };

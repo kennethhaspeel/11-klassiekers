@@ -35,7 +35,7 @@ const MaakSelectiePagina = ({ rennersLijst, periode, deelnemer }: Props) => {
           </div>
           <div>
             <Badge>
-              {3 - renners.filter((x) => x.datum_uit != null).length} transfers
+              {3 - renners.filter((x) => x.datum_in > new Date('2025-02-05')).length} transfers
               over
             </Badge>
           </div>

@@ -12,13 +12,19 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 interface Props {
   renners: SelectieMetRenner[];
   setRenners: React.Dispatch<React.SetStateAction<SelectieMetRenner[]>>;
-  periode:number;
+  periode: number;
   deelnemer: Deelnemer;
-  metFoto:boolean;
-  deelnemerid:string;
+  metFoto: boolean;
+  deelnemerid: string;
 }
 
-const ZoekRenner = ({ renners, setRenners,periode,deelnemer,metFoto,deelnemerid }: Props) => {
+const ZoekRenner = ({
+  renners,
+  setRenners,
+  periode,
+  deelnemer,
+  metFoto,
+}: Props) => {
   const [zoekTekst, setZoekTekst] = useState<string | undefined>(undefined);
   const [data, action, isPending] = useActionState(ZoekRennerAction, null);
 
@@ -26,38 +32,43 @@ const ZoekRenner = ({ renners, setRenners,periode,deelnemer,metFoto,deelnemerid 
     <>
       <div className="w-full">
         <div className="w-full flex flex-col">
-         {
-            renners.length > 9 || renners.filter(x=>x.datum_uit != null).length ==3 ? (
-                <Alert className="bg-orange-600">
-                <AlertDescription>
-                  U hebt al 10 renners in uw selectie
-                </AlertDescription>
-              </Alert>
-
-            ):(
-          <div>
-            <form action={action} className="flex flex-row">
-              <Input
-                type="text"
-                name="zoekterm"
-                placeholder="(deel van) naam"
-                onChange={(e) => setZoekTekst(e.target.value)}
-              />
-              <Button
-                type="submit"
-                disabled={
-                  isPending || (zoekTekst != undefined && zoekTekst.length < 4)
-                }
-              >Zoek</Button>
-            </form>
-          </div>
-            )
-        }           
-
+          {renners.filter((x) => x.datum_uit == null).length > 9 ? (
+            <Alert className="bg-orange-600">
+              <AlertDescription>
+                U hebt 10 renners in uw selectie
+              </AlertDescription>
+            </Alert>
+          ) : renners.filter((x) => x.datum_in > new Date('2025-02-05') ).length == 3 ? (
+            <Alert className="bg-orange-600">
+              <AlertDescription>
+                U hebt geen transfers meer
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <div>
+              <form action={action} className="flex flex-row">
+                <Input
+                  type="text"
+                  name="zoekterm"
+                  placeholder="(deel van) naam"
+                  onChange={(e) => setZoekTekst(e.target.value)}
+                />
+                <Button
+                  type="submit"
+                  disabled={
+                    isPending ||
+                    (zoekTekst != undefined && zoekTekst.length < 4)
+                  }
+                >
+                  Zoek
+                </Button>
+              </form>
+            </div>
+          )}
         </div>
 
         <div className="w-full  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
-          {data && data.data ? (
+          {data && data.data &&renners.filter((x) => x.datum_uit == null).length <10 ? (
             <>
               {data.data.map((renner) => (
                 <RennerCard
@@ -70,7 +81,6 @@ const ZoekRenner = ({ renners, setRenners,periode,deelnemer,metFoto,deelnemerid 
                   deelnemer={deelnemer}
                   metFoto={metFoto}
                   selectieOverzicht={false}
-                  deelnemerid={deelnemerid}
                 />
               ))}
             </>

@@ -3,7 +3,10 @@ import { DeelnemersMetSelectie } from "../queries/SelectieQueries";
 import { GetUitslagByWedstrijdidAction } from "./UitslagActions";
 import { GetUserMetSelectiesAction } from "./UserActions";
 import { VerwerkTussenstandModel } from "../Models/VerwerkTussenStand";
-import { VerwerkTussenstandQuery } from "../queries/TussenstandQueries";
+import {
+  GetTussenstandQuery,
+  VerwerkTussenstandQuery,
+} from "../queries/TussenstandQueries";
 
 export async function VerwerkTussenstandAction(wedstrijdid: number) {
   try {
@@ -26,7 +29,7 @@ export async function VerwerkTussenstandAction(wedstrijdid: number) {
         lijst.push(punt);
       });
     });
-    console.log(lijst)
+    console.log(lijst);
     const result = await VerwerkTussenstandQuery(lijst);
     return {
       success: true,
@@ -40,4 +43,10 @@ export async function VerwerkTussenstandAction(wedstrijdid: number) {
       };
     }
   }
+}
+
+export async function GetTussenstandAction() {
+
+    const uitslag = await GetTussenstandQuery();
+    return uitslag
 }
