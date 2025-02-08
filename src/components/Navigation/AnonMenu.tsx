@@ -65,10 +65,10 @@ const AnonMenu = () => {
             </Button>
 
             <Button asChild variant="ghost" size="default">
-              <RegisterLink>
+              <Link href="/Registratie">
                 <UserPen />
                 Registreer
-              </RegisterLink>
+              </Link>
             </Button>
           </div>
         </div>
