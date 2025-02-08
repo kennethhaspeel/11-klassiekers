@@ -13,14 +13,7 @@ import { GetWedstrijden } from "../../../../prisma/queries/WedstrijdenQueries";
 import { DatumVoorbij } from "@/components/DatumFuncties";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AccordionContent } from "@/components/ui/accordion";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableRow,
-} from "@/components/ui/table";
-import { ChevronDownIcon } from "lucide-react";
+import WedstrijdDetail from "./WedstrijdDetail";
 
 type deelnemerUitslag = {
   deelnemerid: string;
@@ -59,7 +52,7 @@ const TussenstandOverzicht = async () => {
 
   return (
     <>
-      <div className="w-full flex flex-col  m-4 p-4">
+      <div className="w-full flex flex-col  md:m-4 md:p-4">
         <div className="w-full">
           <h2>Overzicht Tussenstand</h2>
         </div>
@@ -91,60 +84,28 @@ const TussenstandOverzicht = async () => {
                       {lijst
                         .filter((x) => x.afgesloten == true)
                         .map((wedstrijd) => (
-                          <Accordion
-                            type="single"
-                            className="w-full mx-2 p-3 bg-slate-500"
+                          <div
                             key={wedstrijd.id}
-                            collapsible
+                            className="flex w-full justify-between align-items-center"
                           >
-                            <AccordionHeader>
-                              <AccordionTrigger
-                                key={wedstrijd.id}
-                                className="text-xl bg-slate-400 w-full p-3 rounded-xl text-left"
-                              >
-                                <div className="w-full flex flex-row">
-                                  <div>
-                                    <ChevronDownIcon className="AccordionChevron" aria-hidden />
-                                  </div>
-                                  <div>
-                                    {wedstrijd.naam}
-                                  </div>
-                                
-                                </div>
-                                
-                              </AccordionTrigger>
-                            </AccordionHeader>
-
-                            <AccordionContent>
-                              <Table className="my-2">
-                                <TableBody>
-                                  {data
-                                    .find((x) => x.id == d.deelnemerid)
-                                    ?.Tussenstand.sort(
-                                      (a, b) => a.punten - b.punten
-                                    )
-                                    .map((renner) => (
-                                      <TableRow key={renner.id}>
-                                        <TableCell>
-                                          {renner.renner.naam}
-                                        </TableCell>
-                                        <TableCell className="text-right px-4">
-                                          {renner.punten}
-                                        </TableCell>
-                                      </TableRow>
-                                    ))}
-                                </TableBody>
-                                <TableFooter>
-                                  <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell className="text-right px-4">
-                                      {d.punten}
-                                    </TableCell>
-                                  </TableRow>
-                                </TableFooter>
-                              </Table>
-                            </AccordionContent>
-                          </Accordion>
+                            <div className="font-bold md:text-xl align-center flex-1 pt-2">
+                              {wedstrijd.naam}
+                            </div>
+                            <div className=" text-right md:pt-2 md:px-3 flex-none mx-1 pt-2">
+                              {d.punten} punten
+                            </div>
+                            <div className="text-center flex-none">
+                              <WedstrijdDetail
+                                ploegnaam={d.ploegnaam}
+                                wedstrijd={wedstrijd.naam}
+                                data={data
+                                  .find((x) => x.id == d.deelnemerid)
+                                  ?.Tussenstand.sort(
+                                    (a, b) => a.punten - b.punten
+                                  )}
+                              />
+                            </div>
+                          </div>
                         ))}
                     </>
                   </AccordionContent>
