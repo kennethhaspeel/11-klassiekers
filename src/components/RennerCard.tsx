@@ -81,6 +81,7 @@ const RennerCard = ({
     const result = await ToevoegenSelectieAction({
       deelnemerid: deelnemer.id,
       rennerid: rennerdetail.id,
+      periode:periode
     });
     if (result.data) {
       setRenners(result.data as unknown as SelectieMetRenner[]);

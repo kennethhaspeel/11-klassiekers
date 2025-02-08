@@ -69,10 +69,12 @@ export async function GetUserMetSelectiesQuery(){
 interface ToevoegenAanSelectieInterface {
   deelnemerid: string;
   rennerid: number;
+  periode:number;
 }
 export async function ToevoegenAanSelectie({
   deelnemerid,
   rennerid,
+  periode
 }: ToevoegenAanSelectieInterface) {
   console.log(
     `Start saving query with deelnemerid ${deelnemerid} and rennerid ${rennerid} and date ${new Date()}`
@@ -82,6 +84,7 @@ export async function ToevoegenAanSelectie({
       deelnemerid: deelnemerid,
       rennerid: Number(rennerid),
       datum_in: new Date(),
+      transfer_in: periode == 1 ? false: true
     },
   });
   console.log(`Saving ended with id ${result.id}`);

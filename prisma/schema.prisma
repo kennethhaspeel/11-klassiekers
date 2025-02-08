@@ -34,6 +34,7 @@ model Selectie {
     rennerid    Int
     datum_in    DateTime  @db.Date
     datum_uit   DateTime? @db.Date
+    transfer_in Boolean?  @default(false)
 
     @@map("selecties")
 }

@@ -35,16 +35,19 @@ export async function VerwijderSelectieAction({
 interface ToevoegenProps {
   deelnemerid: string;
   rennerid: number;
+  periode:number;
 }
 
 export async function ToevoegenSelectieAction({
   deelnemerid,
   rennerid,
+  periode
 }: ToevoegenProps) {
   try {
     await ToevoegenAanSelectie({
       deelnemerid: deelnemerid,
       rennerid: rennerid,
+      periode:periode
     });
     const selecties = await GetSelectieByUserId(deelnemerid);
     return { data: selecties, error: null };
@@ -61,26 +64,27 @@ export async function GetAlleSelectiesActions() {
 
 
 
-export async function ToevoegenAanSelectieAction(
-  previousState: unknown,
-  formData: FormData
-) {
-  try {
-    const deelnemerid: string = formData.get("deelnemerid") as string;
-    const rennerid: number = formData.get("rennerid") as unknown as number;
+// export async function ToevoegenAanSelectieAction(
+//   previousState: unknown,
+//   formData: FormData
+// ) {
+//   try {
+//     const deelnemerid: string = formData.get("deelnemerid") as string;
+//     const rennerid: number = formData.get("rennerid") as unknown as number;
 
-    console.log(deelnemerid);
-    console.log(rennerid);
-    const result = await ToevoegenAanSelectie({
-      deelnemerid: deelnemerid,
-      rennerid: rennerid,
-    });
-    //revalidatePath("/Deelnemer/MijnPloeg");
-    return { data: result, error: null };
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log("Error: ", error.stack);
-    }
-    return { data: null, error: "fout bij zoeken" };
-  }
-}
+//     console.log(deelnemerid);
+//     console.log(rennerid);
+//     const result = await ToevoegenAanSelectie({
+//       deelnemerid: deelnemerid,
+//       rennerid: rennerid,
+//       periode:periode
+//     });
+//     //revalidatePath("/Deelnemer/MijnPloeg");
+//     return { data: result, error: null };
+//   } catch (error: unknown) {
+//     if (error instanceof Error) {
+//       console.log("Error: ", error.stack);
+//     }
+//     return { data: null, error: "fout bij zoeken" };
+//   }
+// }

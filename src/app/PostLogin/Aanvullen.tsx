@@ -41,7 +41,7 @@ console.log(kindeid)
                 id="ploegnaam"
                 name="ploegnaam"
                 placeholder="uw magnifiek bedachte naam..."
-                className="border rounded p-2 bg-gray-800"
+                className="border rounded p-2 bg-gray-400"
               />
             </div>
 
@@ -52,7 +52,7 @@ console.log(kindeid)
                 id="telefoon"
                 name="telefoon"
                 placeholder="+32499999999"
-                className="border rounded p-2 bg-gray-800"
+                className="border rounded p-2 bg-gray-400"
               />
             </div>
             <div hidden>

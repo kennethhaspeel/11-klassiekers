@@ -1,72 +1,77 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React from "react";
+
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface Props {
-  data: ({
-    renner: {
-      id: number;
-      naam: string;
-      foto: string;
-      vlag: string;
-      nationaliteit: string;
-      url: string;
-      uciranking: number;
-      teamid: number;
-    };
-  } & {
-    id: number;
-    deelnemerid: string;
-    rennerid: number;
-    wedstrijdid: number;
-    punten: number;
-  })[] | undefined;
+  data:
+    | ({
+        renner: {
+          id: number;
+          naam: string;
+          foto: string;
+          vlag: string;
+          nationaliteit: string;
+          url: string;
+          uciranking: number;
+          teamid: number;
+        };
+      } & {
+        id: number;
+        deelnemerid: string;
+        rennerid: number;
+        wedstrijdid: number;
+        punten: number;
+      })[]
+    | undefined;
   ploegnaam: string;
   wedstrijd: string;
 }
 const WedstrijdDetail = ({ data, wedstrijd, ploegnaam }: Props) => {
   return (
     <>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
+      <Dialog>
+        <DialogTrigger asChild>
           <Button>Toon Detail</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              <div className="flex flex-col">
-                <div>{wedstrijd}</div>
-                <div>{ploegnaam}</div>
-              </div>
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              <div className="flex flex-col">
-                {data
-                  ? data?.map((renner) => (
-                      <div key={renner.id} className="flex flex-row w-full border-b-2 mb-2">
-                        <div className="w-3/4">{renner.renner.naam}</div>
-                        <div className="w-1/4 text-right">{renner.punten}</div>
-                      </div>
-                    ))
-                  : ""}
-              </div>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>OK</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {wedstrijd}
+              <br />
+              {ploegnaam}
+            </DialogTitle>
+          </DialogHeader>
+          <Table>
+            <TableBody>
+              {data
+                ? data?.map((renner) => (
+                    <TableRow key={renner.id}>
+                      <TableCell>{renner.renner.naam}</TableCell>
+                      <TableCell>{renner.punten}</TableCell>
+                    </TableRow>
+                  ))
+                : ""}
+            </TableBody>
+          </Table>
+
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="submit">OK</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

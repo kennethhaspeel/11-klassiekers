@@ -36,3 +36,14 @@ export async function GetTussenstandQuery(){
   })
   return result
 }
+
+export type TussenstandMetDeelnemer= Prisma.PromiseReturnType<typeof GetTussenstandenMetPloegQuery>
+export async function GetTussenstandenMetPloegQuery(){
+  const result = await db.tussenstand.findMany({
+include:{
+  renner:true,
+  deelnemer:true
+}
+  })
+  return result
+}

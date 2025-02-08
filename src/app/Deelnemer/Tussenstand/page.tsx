@@ -20,13 +20,15 @@ type deelnemerUitslag = {
   ploegnaam: string;
   punten: number;
 };
+
 const TussenstandOverzicht = async () => {
   const { isAuthenticated } = getKindeServerSession();
   const auth = await isAuthenticated();
   if (!auth) {
     return <GeenToegang />;
   }
-  const lijst = await GetWedstrijden();
+  const lijst = (await GetWedstrijden()).sort((a,b)=> a.datum.valueOf() - b.datum.valueOf());
+  
   if (!DatumVoorbij(lijst[0].datum)) {
     return (
       <div className="w-full flex flex-col">
@@ -43,6 +45,7 @@ const TussenstandOverzicht = async () => {
   }
   //console.log(lijst)
   const data: DeelnemerMetTussenstand = await GetTussenstandAction();
+  data.map(d=>(d.Tussenstand.map(t=>console.log(t))))
   //console.log(data);
   const deelnemeruitslag: deelnemerUitslag[] = data.map((d) => ({
     deelnemerid: d.id,
@@ -50,8 +53,10 @@ const TussenstandOverzicht = async () => {
     punten: d.Tussenstand.reduce((sum, item) => sum + item.punten, 0),
   }));
 
+
+//console.log(data)
   return (
-    <>
+<>
       <div className="w-full flex flex-col  md:m-4 md:p-4">
         <div className="w-full">
           <h2>Overzicht Tussenstand</h2>
@@ -86,13 +91,17 @@ const TussenstandOverzicht = async () => {
                         .map((wedstrijd) => (
                           <div
                             key={wedstrijd.id}
-                            className="flex w-full justify-between align-items-center"
+                            className="flex w-full justify-between align-items-center my-2"
                           >
                             <div className="font-bold md:text-xl align-center flex-1 pt-2">
                               {wedstrijd.naam}
                             </div>
                             <div className=" text-right md:pt-2 md:px-3 flex-none mx-1 pt-2">
-                              {d.punten} punten
+
+                              {
+
+                                data.find(x=>x.id == d.deelnemerid)?.Tussenstand.filter(x=>x.wedstrijdid == wedstrijd.id).reduce((sum,item)=>sum+item.punten,0)
+                              } punten
                             </div>
                             <div className="text-center flex-none">
                               <WedstrijdDetail
@@ -100,7 +109,7 @@ const TussenstandOverzicht = async () => {
                                 wedstrijd={wedstrijd.naam}
                                 data={data
                                   .find((x) => x.id == d.deelnemerid)
-                                  ?.Tussenstand.sort(
+                                  ?.Tussenstand.filter(x=>x.wedstrijdid == wedstrijd.id).sort(
                                     (a, b) => a.punten - b.punten
                                   )}
                               />
