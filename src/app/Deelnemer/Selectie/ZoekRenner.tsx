@@ -52,6 +52,7 @@ const ZoekRenner = ({
                   name="zoekterm"
                   placeholder="(deel van) naam"
                   onChange={(e) => setZoekTekst(e.target.value)}
+                  className="bg-white dark:bg-gray-100  placeholder:text-grey-50"
                 />
                 <Button
                   type="submit"

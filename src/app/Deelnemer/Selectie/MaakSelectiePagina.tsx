@@ -53,12 +53,12 @@ const MaakSelectiePagina = ({ rennersLijst, periode, deelnemer }: Props) => {
         <Accordion type="single" collapsible className="w-full  flex flex-col">
           <AccordionItem value="selectie">
             <AccordionTrigger className="w-full">
-              <Alert className="w-full">
+              <Alert className="w-full bg-gray-300">
                 <AlertDescription className="flex flex-row gap-2 w-full">
-                  <div>Huidige Selectie</div>
+                  <div  className="dark:text-black font-bold">Huidige Selectie</div>
 
                   <div className="ms-5 justify-self-end">
-                    <ArrowDownUp size={28} />
+                    <ArrowDownUp size={28} className="dark:text-black"/>
                   </div>
                 </AlertDescription>
               </Alert>
@@ -88,9 +88,9 @@ const MaakSelectiePagina = ({ rennersLijst, periode, deelnemer }: Props) => {
           <Separator />
         </div>
         <div className="my-2">
-          <Alert>
-            <AlertDescription className="flex flex-row gap-2">
-              <div>Zoek Renner</div>
+          <Alert className="bg-gray-300">
+            <AlertDescription className="flex flex-row gap-2 ">
+              <div className="dark:text-black font-bold">Zoek Renner</div>
             </AlertDescription>
           </Alert>
         </div>
