@@ -20,7 +20,7 @@ const Aanvullen = ({ kindeid, naam, voornaam, email }: Props) => {
   const [state, action, isPending] = useActionState(InsertDeelnemerAction, {
     errors: {} as NieuweDeelnemerSchemaErrorType,
   });
-console.log(kindeid)
+  console.log(kindeid);
   return (
     <>
       <main className="flex flex-col">
@@ -31,7 +31,53 @@ console.log(kindeid)
             vullen
           </p>
         </div>
-        <>{state?.allSaved && <p>Alles werd bewaard...</p>}</>
+        <div>
+          {state?.errors?.fieldErrors ? (
+            <Alert variant="destructive">
+              <AlertTitle className="bg-red-600 m-2 p-3 text-white">Fouten</AlertTitle>
+              <AlertDescription>
+                <>
+                  {state?.errors?.fieldErrors?.ploegnaam ? (
+                    <p>{state?.errors?.fieldErrors?.ploegnaam}</p>
+                  ) : (
+                    ""
+                  )}
+                </>
+                <>
+                  {state?.errors?.fieldErrors?.telefoon ? (
+                    <p>{state?.errors?.fieldErrors?.telefoon}</p>
+                  ) : (
+                    ""
+                  )}
+                </>
+                <>
+                  {state?.errors?.fieldErrors?.schiftingUur ? (
+                    <p>{state?.errors?.fieldErrors?.schiftingUur}</p>
+                  ) : (
+                    ""
+                  )}
+                </>
+                <>
+                  {state?.errors?.fieldErrors?.schiftingMinuten ? (
+                    <p>{state?.errors?.fieldErrors?.schiftingMinuten}</p>
+                  ) : (
+                    ""
+                  )}
+                </>
+                <>
+                  {state?.errors?.fieldErrors?.schiftingSeconden ? (
+                    <p>{state?.errors?.fieldErrors?.schiftingSeconden}</p>
+                  ) : (
+                    ""
+                  )}
+                </>
+              </AlertDescription>
+            </Alert>
+          ) : (
+            ""
+          )}
+        </div>
+        {/* <>{state?.allSaved && <p>Alles werd bewaard...</p>}</> */}
         <div className="p-2">
           <form action={action}>
             <div className="grid w-full max-w-sm items-center gap-2">
@@ -55,6 +101,33 @@ console.log(kindeid)
                 className="border rounded p-2 bg-gray-400"
               />
             </div>
+            <div className="grid w-full max-w-sm items-center gap-2">
+              <span className="p-2">Schiftingsvraag</span>
+              <div className="grid grid-cols-3">
+                <Input
+                  type="number"
+                  className="border rounded p-2 bg-gray-400"
+                  id="schiftingUur"
+                  name="schiftingUur"
+                  placeholder="uren"
+                  
+                />
+                <Input
+                  type="number"
+                  className="border rounded p-2 bg-gray-400"
+                  id="schiftingMinuten"
+                  name="schiftingMinuten"
+                  placeholder="minuten"
+                />
+                <Input
+                  type="number"
+                  className="border rounded p-2 bg-gray-400"
+                  id="schiftingSeconden"
+                  name="schiftingSeconden"
+                  placeholder="seconden"
+                />
+              </div>
+            </div>
             <div hidden>
               <Input
                 type="text"
@@ -69,7 +142,12 @@ console.log(kindeid)
                 name="email"
                 defaultValue={email!}
               />
-              <Input type="text" id="kindeid" name="kindeid" defaultValue={kindeid!} />
+              <Input
+                type="text"
+                id="kindeid"
+                name="kindeid"
+                defaultValue={kindeid!}
+              />
             </div>
             {state.allSaved ? (
               <div className="py-2">

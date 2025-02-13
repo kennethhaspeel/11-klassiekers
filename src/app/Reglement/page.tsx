@@ -49,6 +49,10 @@ const Reglement = async () => {
           </Table>
         </div>
         <div className="p-2 w-full">
+          <p>Inschrijving kost 15 euro, iedere inkomende transfer kost 2 euro.</p>
+          <p>Dit kan vereffend worden aan de toog van Kapittel of door overschrijving op BE30 4627 3025 6111 met <span className="font-bold">vermelding van uw naam of ploegnaam</span></p>
+        </div>
+        <div className="p-2 w-full">
         <Alert className="bg-gray-400 w-full p-4">
           <AlertTitle>
             Puntentelling

@@ -10,8 +10,31 @@ const NieuweDeelnemerSchema = z.object({
   naam: z.string().min(1, "Geef een korte omschrijving van de missie"),
   voornaam: z.string().min(1, "Geef een korte omschrijving van de missie"),
   email: z.string().min(1, "Geef een korte omschrijving van de missie"),
-  telefoon: z.string().min(1, "Geef een korte omschrijving van de missie"),
-  ploegnaam: z.string().min(1, "Geef een korte omschrijving van de missie"),
+  telefoon: z.string().min(1, "Geef een telefoonnummer in"),
+  ploegnaam: z.string().min(1, "Geef een ploegnaam in"),
+  schiftingUur: z.preprocess(
+    (value) => (value === "" ? undefined : Number(value)),
+    z
+    .number({ required_error: "gelieve uren in te vullen" })
+    .min(0, "Een tijd kan niet negatief zijn")
+    .lt(24, "Uren kunnen niet meer dan 24 zijn")
+    .int(),
+  ),
+  schiftingMinuten: z.preprocess(
+    (value) => (value === "" ? undefined : Number(value)),
+    z.number({ required_error: "gelieve minuten in te vullen" })
+    .min(0, "Een tijd kan niet negatief zijn")
+    .lt(60, "Minuten kunnen niet meer dan 59 zijn")
+    .int(),
+  ),
+    schiftingSeconden: z.preprocess(
+    (value) => (value === "" ? undefined : Number(value)),
+    z
+      .number({ message: "gelieve seconden in te vullen" })
+      .min(0, "Een tijd kan niet negatief zijn")
+      .lt(60, "Seonden kunnen niet meer dan 59 zijn")
+      .int()
+  ),
 });
 export type NieuweDeelnemerSchemaType = z.infer<typeof NieuweDeelnemerSchema>;
 export type NieuweDeelnemerSchemaErrorType = z.inferFlattenedErrors<
@@ -40,8 +63,11 @@ export async function InsertDeelnemerAction(
     createdAt: new Date(),
     updatedAt: new Date(),
     bevestigd: false,
+    SchiftingUur: form.get("schiftingUur") as unknown as number,
+    SchiftingMinuten: form.get("schiftingMinuten") as unknown as number,
+    SchiftingSeconden: form.get("schiftingSeconden") as unknown as number,
   };
-
+  console.log(d);
   await InsertDeelnemer(d);
   return { allSaved: true };
 }
@@ -63,7 +89,6 @@ export async function updateMetFotoAction(
 }
 
 export async function GetUserMetSelectiesAction() {
-
-    const data = await GetUserMetSelectiesQuery();
-    return data;
+  const data = await GetUserMetSelectiesQuery();
+  return data;
 }
