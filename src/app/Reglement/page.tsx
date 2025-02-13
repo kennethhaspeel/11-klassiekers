@@ -49,7 +49,7 @@ const Reglement = async () => {
           </Table>
         </div>
         <div className="p-2 w-full">
-        <Alert className="bg-gray-600 w-full p-4">
+        <Alert className="bg-gray-400 w-full p-4">
           <AlertTitle>
             Puntentelling
           </AlertTitle>

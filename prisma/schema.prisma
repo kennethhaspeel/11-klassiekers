@@ -10,18 +10,21 @@ datasource db {
 }
 
 model Deelnemer {
-    id          String        @id
-    naam        String        @db.VarChar(100)
-    voornaam    String        @db.VarChar(100)
-    email       String        @unique
-    telefoon    String        @db.VarChar(100)
-    ploegnaam   String        @db.VarChar(100)
-    metFoto     Boolean       @default(false)
-    bevestigd   Boolean?      @default(false)
-    createdAt   DateTime?     @default(now())
-    updatedAt   DateTime?     @updatedAt
-    Selectie    Selectie[]
-    Tussenstand Tussenstand[]
+    id                String        @id
+    naam              String        @db.VarChar(100)
+    voornaam          String        @db.VarChar(100)
+    email             String        @unique
+    telefoon          String        @db.VarChar(100)
+    ploegnaam         String        @db.VarChar(100)
+    metFoto           Boolean       @default(false)
+    bevestigd         Boolean?      @default(false)
+    createdAt         DateTime?     @default(now())
+    updatedAt         DateTime?     @updatedAt
+    Selectie          Selectie[]
+    Tussenstand       Tussenstand[]
+    SchiftingUur      Int           @default(0)
+    SchiftingMinuten  Int           @default(0)
+    SchiftingSeconden Int           @default(0)
 
     @@map("deelnemers")
 }
