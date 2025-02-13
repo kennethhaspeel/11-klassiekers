@@ -14,7 +14,21 @@ export async function GetUserById(KindeId: string) {
 
 export async function InsertDeelnemer(deelnemer: Deelnemer) {
   const result = await db.deelnemer.create({
-    data: deelnemer,
+    data: {
+      id:deelnemer.id,
+      naam:deelnemer.naam,
+      voornaam:deelnemer.voornaam,
+      email:deelnemer.email,
+      telefoon:deelnemer.telefoon,
+      ploegnaam:deelnemer.ploegnaam,
+      metFoto:deelnemer.metFoto,
+      bevestigd:true,
+      createdAt:deelnemer.createdAt,
+      updatedAt:deelnemer.updatedAt,
+      SchiftingUur: Number(deelnemer.SchiftingUur),
+      SchiftingMinuten:Number(deelnemer.SchiftingMinuten),
+      SchiftingSeconden:Number(deelnemer.SchiftingSeconden)
+    },
   });
   return result;
 }
