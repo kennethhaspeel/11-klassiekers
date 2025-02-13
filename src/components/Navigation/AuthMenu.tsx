@@ -232,7 +232,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                   }}
                 >
                   <Link
-                    href="/Deelnemer/wedstrijdenOverzicht"
+                    href="/Deelnemer/WedstrijdenOverzicht"
                     className="flex justify-center items-center gap-2 ml-0"
                     title="wedstrijdenOverzicht"
                   >
