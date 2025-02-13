@@ -1,10 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { UserPen } from "lucide-react";
+import { useState } from "react";
 
 const RegistratieComponent = () => {
+  const [veilig, setVeilig] = useState<string | null>(null);
   return (
     <>
       <div className="flex flex-col w-full mt-5">
@@ -24,14 +27,43 @@ const RegistratieComponent = () => {
             2 euro
           </p>
         </div>
+        <hr />
         <div>
           <div className="flex items-center justify-center mt-4">
-            <Button asChild variant="outline" size="lg">
-              <RegisterLink>
-                <UserPen />
-                Registreer
-              </RegisterLink>
-            </Button>
+            {Number(veilig) === 1755 ? (
+              <Button asChild variant="outline" size="lg">
+                <RegisterLink>
+                  <UserPen />
+                  Registreer
+                </RegisterLink>
+              </Button>
+            ) : (
+              <>
+                <div>
+                  <div>
+                    <p>
+                      Om automatisch registraties te voorkomen, voorzien we een
+                      veiligheidsvraag
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Sedert welk jaartal bestaat het Kapittel? Alle informatie
+                      kunt u vinden op kapittel<span className="font-bold text-xl ">1755</span>.be
+                    </p>
+                  </div>
+                  <div className="w-full items-center justify-center mt-3">
+                    <div className="w-1/2 md:w-1/4 mx-auto">
+                      <Input
+                        className="bg-gray-300 border border-black"
+                        placeholder="vul jaartal in"
+                        onChange={(e)=>{setVeilig(e.target.value)}}
+                      ></Input>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
