@@ -102,7 +102,7 @@ const Aanvullen = ({ kindeid, naam, voornaam, email }: Props) => {
               />
             </div>
             <div className="grid w-full max-w-sm items-center gap-2">
-              <span className="p-2">Schiftingsvraag</span>
+              <span className="p-2">Schiftingsvraag: Hoeveel tijd heeft de winnaar van Strade Bianche nodig om de finish te bereiken</span>
               <div className="grid grid-cols-3">
                 <Input
                   type="number"
