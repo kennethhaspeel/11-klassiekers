@@ -66,6 +66,7 @@ export async function InsertDeelnemerAction(
     SchiftingUur: form.get("schiftingUur") as unknown as number,
     SchiftingMinuten: form.get("schiftingMinuten") as unknown as number,
     SchiftingSeconden: form.get("schiftingSeconden") as unknown as number,
+    PushData:''
   };
   console.log(d);
   await InsertDeelnemer(d);

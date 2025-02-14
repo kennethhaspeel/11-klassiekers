@@ -1,13 +1,13 @@
 'use server'
  
-import * as webPush from 'web-push'
+import  webPush, {PushSubscription} from 'web-push'
  
 webPush.setVapidDetails(
   'mailto:11klassiekers@haspeel.be',
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!
 )
- 
+
 let subscription: PushSubscription | null = null
  
 export async function subscribeUser(sub: PushSubscription) {
@@ -30,6 +30,7 @@ export async function sendNotification(message: string) {
   }
  
   try {
+    console.log(subscription)
     await webPush.sendNotification(
       subscription,
       JSON.stringify({

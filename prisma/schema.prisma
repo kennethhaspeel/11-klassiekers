@@ -25,6 +25,7 @@ model Deelnemer {
     SchiftingUur      Int           @default(0)
     SchiftingMinuten  Int           @default(0)
     SchiftingSeconden Int           @default(0)
+    PushData          Json?
 
     @@map("deelnemers")
 }
