@@ -45,16 +45,31 @@ export async function UpdateMetFoto(deelnemerid: string, metFoto: boolean) {
   return result;
 }
 
-// export async function UpdatePushData(deelnemerid:string,data:string){
-//   await db.deelnemer.update({
-//     where:{
-//       id:deelnemerid
-//     },
-//     data:{
-//       PushData:data
-//     }
-//   })
-// }
+export async function CreatePushData(deelnemerid:string,endpoint:string,p256:string,auth:string){
+  await db.pushData.create({
+    data:{
+      deelnemerid:deelnemerid,
+      endpoint:endpoint,
+      p256:p256,
+      auth:auth
+    }
+  })
+}
+export async function DeletePushData(deelnemerid:string,endpoint:string,p256:string,auth:string){
+  await db.pushData.deleteMany({
+    where:{
+      deelnemerid:deelnemerid,
+      endpoint:endpoint,
+      p256:p256,
+      auth:auth
+    }
+  })
+}
+
+export async function GetAllPushData(){
+  const result = await db.pushData.findMany()
+  return result
+}
 
 // export async function GetUserPushData(deelnemerid:string){
 //   const result = await db.deelnemer.findFirst({

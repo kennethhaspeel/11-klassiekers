@@ -34,7 +34,7 @@ model PushData {
     id          Int       @id @default(autoincrement())
     deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
     deelnemerid String
-    endpoint    String
+    endpoint    String    
     p256        String
     auth        String
 }

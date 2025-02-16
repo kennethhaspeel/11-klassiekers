@@ -7,6 +7,7 @@ import {
   unsubscribeUser,
 } from "./PushNotificationActions";
 import { Button } from "./ui/button";
+import { PushSubscription as pushsubscription } from "web-push";
 //import { UpdatePushData } from "../../prisma/queries/UserQueries";
 
 function urlBase64ToUint8Array(base64String: string) {
@@ -22,19 +23,19 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-interface Props{
-    id?:string
+interface Props {
+  id: string;
 }
 
-const PushNotificationManager = ({id}:Props) => {
-
-    //https://felixgerschau.com/web-push-notifications-tutorial/
+const PushNotificationManager = ({ id }: Props) => {
+  //https://felixgerschau.com/web-push-notifications-tutorial/
 
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null
   );
   const [message, setMessage] = useState("");
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -53,7 +54,7 @@ const PushNotificationManager = ({id}:Props) => {
   }
 
   async function subscribeToPush() {
-    console.log(id)
+    console.log(id);
     const registration = await navigator.serviceWorker.ready;
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
@@ -63,24 +64,21 @@ const PushNotificationManager = ({id}:Props) => {
     });
     setSubscription(sub);
     const serializedSub = JSON.parse(JSON.stringify(sub));
-    
+
     console.log(serializedSub);
-    await subscribeUser(serializedSub);
+    await subscribeUser({sub:serializedSub,id:id});
   }
 
   async function unsubscribeFromPush() {
-    //console.log(subscription.)
+    const serializedSub:pushsubscription = JSON.parse(JSON.stringify(subscription));
+    await unsubscribeUser({ sub: serializedSub, id: id });
     await subscription?.unsubscribe();
     setSubscription(null);
-    await unsubscribeUser();
   }
 
   async function sendTestNotification() {
-    // const sub = await GetUserPushData(id!)
-    // console.log(sub)
-    // setSubscription(JSON.parse(JSON.stringify(sub)))
     if (subscription) {
-      await sendNotification(message);
+      await sendNotification(title,message);
       setMessage("");
     }
   }
@@ -96,9 +94,19 @@ const PushNotificationManager = ({id}:Props) => {
         <>
           <div className="flex flex-col">
             <div>U hebt toestemming gegeven voor push berichten.</div>
-            <div><Button onClick={unsubscribeFromPush}>Toestemming intrekken</Button></div>
+            <div>
+              <Button onClick={unsubscribeFromPush}>
+                Toestemming intrekken
+              </Button>
+            </div>
           </div>
           <div className="mt-2">
+          <input
+              type="text"
+              placeholder="titel"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
             <input
               type="text"
               placeholder="Enter notification message"
@@ -115,7 +123,8 @@ const PushNotificationManager = ({id}:Props) => {
         </>
       )}
       <div className="mt-3 text-sm">
-        Disclaimer: Push berichten zijn een beetje een experiment. Het kan dus goed zijn dat je geen enkel bericht ontvangt
+        Disclaimer: Push berichten zijn een beetje een experiment. Het kan dus
+        goed zijn dat je geen enkel bericht ontvangt
       </div>
     </div>
   );

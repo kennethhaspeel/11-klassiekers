@@ -1,49 +1,60 @@
-'use server'
- 
-import  webPush, {PushSubscription} from 'web-push'
+"use server";
 
- 
+import webPush, { PushSubscription } from "web-push";
+import {
+  CreatePushData,
+  DeletePushData,
+  GetAllPushData,
+} from "../../prisma/queries/UserQueries";
+
 webPush.setVapidDetails(
-  'mailto:11klassiekers@haspeel.be',
+  "mailto:11klassiekers@haspeel.be",
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!
-)
+);
 
-let subscription: PushSubscription | null = null
- 
-export async function subscribeUser(sub: PushSubscription) {
-  subscription = sub
-  
-  // In a production environment, you would want to store the subscription in a database
-  // For example: await db.subscriptions.create({ data: sub })
-  return { success: true }
+interface IsubscribeUser {
+  sub: PushSubscription;
+  id: string;
 }
- 
-export async function unsubscribeUser() {
-  subscription = null
-  // In a production environment, you would want to remove the subscription from the database
-  // For example: await db.subscriptions.delete({ where: { ... } })
-  return { success: true }
+export async function subscribeUser({ sub, id }: IsubscribeUser) {
+  await CreatePushData(id, sub.endpoint, sub.keys.p256dh, sub.keys.auth);
+  return { success: true };
 }
- 
-export async function sendNotification(message: string) {
-  if (!subscription) {
-    throw new Error('No subscription available')
-  }
- 
+
+interface IunsubscribeUser {
+  sub: PushSubscription;
+  id: string;
+}
+export async function unsubscribeUser({ sub, id }: IunsubscribeUser) {
+  await DeletePushData(id, sub.endpoint, sub.keys.p256dh, sub.keys.auth);
+  return { success: true };
+}
+
+export async function sendNotification(title: string, message: string) {
   try {
-    console.log(subscription)
-    await webPush.sendNotification(
-      subscription,
-      JSON.stringify({
-        title: 'Test Notification',
-        body: message,
-        icon: '/favicon-32x32.png',
-      })
-    )
-    return { success: true }
+    const data = await GetAllPushData();
+
+    data.map(async (sub) => {
+      const subscription: PushSubscription = {
+        endpoint: sub.endpoint,
+        keys: {
+          p256dh: sub.p256,
+          auth: sub.auth,
+        },
+      };
+      await webPush.sendNotification(
+        subscription,
+        JSON.stringify({
+          title: title,
+          body: message,
+          icon: "/favicon-32x32.png",
+        })
+      );
+    });
+    return { success: true };
   } catch (error) {
-    console.error('Error sending push notification:', error)
-    return { success: false, error: 'Failed to send notification' }
+    console.error("Error sending push notification:", error);
+    return { success: false, error: "Failed to send notification" };
   }
 }
