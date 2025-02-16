@@ -3,12 +3,12 @@ import Image from "next/image";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import PushNotificationManager from "@/components/PushNotificationManager";
 import PushNotificationIos from "@/components/PushNotificationIos";
-//import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
+
 
 export default async function Home() {
-  const {getUser, isAuthenticated, getPermissions } = getKindeServerSession();
+  const {getUser, isAuthenticated } = getKindeServerSession();
   const authenticated = await isAuthenticated();
-  const rechten = await getPermissions();
+
 const user =await getUser()
   return (
     <div className="flex-grow justify-center text-center mx-auto p-3">
@@ -27,9 +27,10 @@ const user =await getUser()
         />
       </div>
       <div>
-        {authenticated && rechten?.permissions.includes("admin") ? (
+        {authenticated ? (
           <>
             <div className="flex flex-col gap-4">
+
               <PushNotificationManager id={user?.id }/>
               <hr />
               <PushNotificationIos />

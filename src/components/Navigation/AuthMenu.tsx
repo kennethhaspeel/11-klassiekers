@@ -130,7 +130,7 @@ const AuthMenu = ({ isAdmin }: Props) => {
                       asChild
                     >
                       <Link
-                        href="/Admin/deelnemers"
+                        href="/Admin/Deelnemers"
                         className="flex justify-center items-center gap-2 ml-0"
                         title="Deelnemers"
                       >

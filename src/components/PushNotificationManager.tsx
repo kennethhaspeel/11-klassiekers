@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  sendNotification,
   subscribeUser,
   unsubscribeUser,
 } from "./PushNotificationActions";
@@ -34,8 +33,7 @@ const PushNotificationManager = ({ id }: Props) => {
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null
   );
-  const [message, setMessage] = useState("");
-  const [title, setTitle] = useState("");
+
 
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -76,12 +74,7 @@ const PushNotificationManager = ({ id }: Props) => {
     setSubscription(null);
   }
 
-  async function sendTestNotification() {
-    if (subscription) {
-      await sendNotification(title,message);
-      setMessage("");
-    }
-  }
+
 
   if (!isSupported) {
     return <p>Push berichten worden niet ondersteund</p>;
@@ -100,21 +93,7 @@ const PushNotificationManager = ({ id }: Props) => {
               </Button>
             </div>
           </div>
-          <div className="mt-2">
-          <input
-              type="text"
-              placeholder="titel"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Enter notification message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <Button onClick={sendTestNotification}>Send Test</Button>
-          </div>
+
         </>
       ) : (
         <>
