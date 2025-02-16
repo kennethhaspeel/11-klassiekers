@@ -25,9 +25,18 @@ model Deelnemer {
     SchiftingUur      Int           @default(0)
     SchiftingMinuten  Int           @default(0)
     SchiftingSeconden Int           @default(0)
-    PushData          Json?
+    PushData          PushData[]
 
     @@map("deelnemers")
+}
+
+model PushData {
+    id          Int       @id @default(autoincrement())
+    deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
+    deelnemerid String
+    endpoint    String
+    p256        String
+    auth        String
 }
 
 model Selectie {

@@ -45,23 +45,23 @@ export async function UpdateMetFoto(deelnemerid: string, metFoto: boolean) {
   return result;
 }
 
-export async function UpdatePushData(deelnemerid:string,data:string){
-  await db.deelnemer.update({
-    where:{
-      id:deelnemerid
-    },
-    data:{
-      PushData:data
-    }
-  })
-}
+// export async function UpdatePushData(deelnemerid:string,data:string){
+//   await db.deelnemer.update({
+//     where:{
+//       id:deelnemerid
+//     },
+//     data:{
+//       PushData:data
+//     }
+//   })
+// }
 
-export async function GetUserPushData(deelnemerid:string){
-  const result = await db.deelnemer.findFirst({
-    where:{
-      id:deelnemerid
-    }
-  })
-  console.log(result?.PushData)
-  return result?.PushData
-}
+// export async function GetUserPushData(deelnemerid:string){
+//   const result = await db.deelnemer.findFirst({
+//     where:{
+//       id:deelnemerid
+//     }
+//   })
+//   console.log(result?.PushData)
+//   return result?.PushData
+// }

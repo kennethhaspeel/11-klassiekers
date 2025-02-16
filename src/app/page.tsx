@@ -20,9 +20,10 @@ const user =await getUser()
           width={700}
           height={700}
           sizes="700px"
-          alt="Pagina niet gevonden"
+          alt="van in tiede"
           priority={true}
-          title="Pagina niet gevonden"
+          title="van in tiede"
+          style={{height:'auto',width:'auto'}}
         />
       </div>
       <div>

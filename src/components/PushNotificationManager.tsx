@@ -7,7 +7,7 @@ import {
   unsubscribeUser,
 } from "./PushNotificationActions";
 import { Button } from "./ui/button";
-import { UpdatePushData } from "../../prisma/queries/UserQueries";
+//import { UpdatePushData } from "../../prisma/queries/UserQueries";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -63,13 +63,13 @@ const PushNotificationManager = ({id}:Props) => {
     });
     setSubscription(sub);
     const serializedSub = JSON.parse(JSON.stringify(sub));
-    await UpdatePushData(id!,serializedSub)
+    
     console.log(serializedSub);
     await subscribeUser(serializedSub);
   }
 
   async function unsubscribeFromPush() {
-    console.log(id)
+    //console.log(subscription.)
     await subscription?.unsubscribe();
     setSubscription(null);
     await unsubscribeUser();

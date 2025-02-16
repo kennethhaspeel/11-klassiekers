@@ -1,6 +1,7 @@
 'use server'
  
 import  webPush, {PushSubscription} from 'web-push'
+
  
 webPush.setVapidDetails(
   'mailto:11klassiekers@haspeel.be',
@@ -12,6 +13,7 @@ let subscription: PushSubscription | null = null
  
 export async function subscribeUser(sub: PushSubscription) {
   subscription = sub
+  
   // In a production environment, you would want to store the subscription in a database
   // For example: await db.subscriptions.create({ data: sub })
   return { success: true }
