@@ -1,6 +1,6 @@
 "use server";
 
-import { Deelnemer } from "@prisma/client";
+import { Deelnemer, Prisma } from "@prisma/client";
 import db from "../prisma";
 
 export async function GetUserById(KindeId: string) {
@@ -68,6 +68,18 @@ export async function DeletePushData(deelnemerid:string,endpoint:string,p256:str
 
 export async function GetAllPushData(){
   const result = await db.pushData.findMany()
+  return result
+}
+
+export type UsersMetFinancieel = Prisma.PromiseReturnType<
+  typeof GetDeelnemersFinancieel
+>;
+export async function GetDeelnemersFinancieel(){
+  const result = db.deelnemer.findMany({
+    include:{
+      Financieel: true
+    }
+  })
   return result
 }
 

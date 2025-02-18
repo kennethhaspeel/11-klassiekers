@@ -4,6 +4,8 @@ import Aanvullen from "./Aanvullen";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { SaveLogging } from "../../../prisma/queries/LoggingQueries";
+import PushNotificationManager from "@/components/PushNotificationManager";
+import PushNotificationIos from "@/components/PushNotificationIos";
 const PostLogin = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -29,6 +31,16 @@ const PostLogin = async () => {
           <AlertDescription>U bent ingelogd</AlertDescription>
         </VisuallyHidden>
       </Alert>
+      <div>
+      <div className="flex-grow justify-center text-center mx-auto">
+            <div className="flex flex-col gap-4">
+
+              <PushNotificationManager id={user?.id }/>
+              <hr />
+              <PushNotificationIos />
+            </div>
+          </div>
+      </div>
     </div>
   );
 };

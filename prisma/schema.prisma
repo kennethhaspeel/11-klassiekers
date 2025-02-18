@@ -27,8 +27,19 @@ model Deelnemer {
     SchiftingSeconden Int           @default(0)
     PushData          PushData[]
     Log               Log[]
+    Financieel        Financieel[]
 
     @@map("deelnemers")
+}
+
+model Financieel {
+    id          Int       @id @default(autoincrement())
+    deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
+    deelnemerid String
+    datum       DateTime  @db.Date
+    bedrag      Int       @default(0)
+
+    @@map("finacieel")
 }
 
 model PushData {

@@ -1,7 +1,7 @@
 "use server";
 
 import { Deelnemer } from "@prisma/client";
-import { InsertDeelnemer, UpdateMetFoto } from "../queries/UserQueries";
+import { GetDeelnemersFinancieel, InsertDeelnemer, UpdateMetFoto, UsersMetFinancieel } from "../queries/UserQueries";
 import { z } from "zod";
 import { GetUserMetSelectiesQuery } from "../queries/SelectieQueries";
 import { SaveLogging } from "../queries/LoggingQueries";
@@ -95,4 +95,9 @@ export async function updateMetFotoAction(
 export async function GetUserMetSelectiesAction() {
   const data = await GetUserMetSelectiesQuery();
   return data;
+}
+
+export async function GetUsersMetFinancieelAction(){
+  const data:UsersMetFinancieel = await GetDeelnemersFinancieel()
+  return data
 }
