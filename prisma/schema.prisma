@@ -36,10 +36,11 @@ model Financieel {
     id          Int       @id @default(autoincrement())
     deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
     deelnemerid String
-    datum       DateTime  @db.Date
+    datum       DateTime  @default(now())
     bedrag      Int       @default(0)
+    betaalwijze String    @db.VarChar(50)
 
-    @@map("finacieel")
+    @@map("financieel")
 }
 
 model PushData {

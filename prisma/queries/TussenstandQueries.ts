@@ -7,9 +7,6 @@ import db from "../prisma";
 export async function VerwerkTussenstandQuery(
   lijst: VerwerkTussenstandModel[]
 ) {
-    // const x = await db.uitslag.create({
-    //   data: {},
-    // });
   try {
     const result = await db.tussenstand.createMany({
       data: lijst,

@@ -15,19 +15,19 @@ export async function GetUserById(KindeId: string) {
 export async function InsertDeelnemer(deelnemer: Deelnemer) {
   const result = await db.deelnemer.create({
     data: {
-      id:deelnemer.id,
-      naam:deelnemer.naam,
-      voornaam:deelnemer.voornaam,
-      email:deelnemer.email,
-      telefoon:deelnemer.telefoon,
-      ploegnaam:deelnemer.ploegnaam,
-      metFoto:deelnemer.metFoto,
-      bevestigd:true,
-      createdAt:deelnemer.createdAt,
-      updatedAt:deelnemer.updatedAt,
+      id: deelnemer.id,
+      naam: deelnemer.naam,
+      voornaam: deelnemer.voornaam,
+      email: deelnemer.email,
+      telefoon: deelnemer.telefoon,
+      ploegnaam: deelnemer.ploegnaam,
+      metFoto: deelnemer.metFoto,
+      bevestigd: true,
+      createdAt: deelnemer.createdAt,
+      updatedAt: deelnemer.updatedAt,
       SchiftingUur: Number(deelnemer.SchiftingUur),
-      SchiftingMinuten:Number(deelnemer.SchiftingMinuten),
-      SchiftingSeconden:Number(deelnemer.SchiftingSeconden)
+      SchiftingMinuten: Number(deelnemer.SchiftingMinuten),
+      SchiftingSeconden: Number(deelnemer.SchiftingSeconden),
     },
   });
   return result;
@@ -45,50 +45,61 @@ export async function UpdateMetFoto(deelnemerid: string, metFoto: boolean) {
   return result;
 }
 
-export async function CreatePushData(deelnemerid:string,endpoint:string,p256:string,auth:string){
+export async function CreatePushData(
+  deelnemerid: string,
+  endpoint: string,
+  p256: string,
+  auth: string
+) {
   await db.pushData.create({
-    data:{
-      deelnemerid:deelnemerid,
-      endpoint:endpoint,
-      p256:p256,
-      auth:auth
-    }
-  })
+    data: {
+      deelnemerid: deelnemerid,
+      endpoint: endpoint,
+      p256: p256,
+      auth: auth,
+    },
+  });
 }
-export async function DeletePushData(deelnemerid:string,endpoint:string,p256:string,auth:string){
+export async function DeletePushData(
+  deelnemerid: string,
+  endpoint: string,
+  p256: string,
+  auth: string
+) {
   await db.pushData.deleteMany({
-    where:{
-      deelnemerid:deelnemerid,
-      endpoint:endpoint,
-      p256:p256,
-      auth:auth
+    where: {
+      deelnemerid: deelnemerid,
+      endpoint: endpoint,
+      p256: p256,
+      auth: auth,
+    },
+  });
+}
+
+export async function GetAllPushData() {
+  const result = await db.pushData.findMany();
+  return result;
+}
+
+export type UsersMetFinancieel = Prisma.PromiseReturnType<typeof GetDeelnemersFinancieel>;
+
+export async function GetDeelnemersFinancieel() {
+  try {
+    const result = await db.deelnemer.findMany({
+      include:{
+        Selectie:true,
+        Financieel:true
+      },
+      orderBy: [{ naam: "asc" }, { voornaam: "asc" }],
+    });
+    //console.log(result)
+    return  result;
+  } catch (error: unknown) {
+    console.log(typeof error)
+    if (error instanceof Error) {
+      console.log(error.message);
+
     }
-  })
+  }
 }
 
-export async function GetAllPushData(){
-  const result = await db.pushData.findMany()
-  return result
-}
-
-export type UsersMetFinancieel = Prisma.PromiseReturnType<
-  typeof GetDeelnemersFinancieel
->;
-export async function GetDeelnemersFinancieel(){
-  const result = db.deelnemer.findMany({
-    include:{
-      Financieel: true
-    }
-  })
-  return result
-}
-
-// export async function GetUserPushData(deelnemerid:string){
-//   const result = await db.deelnemer.findFirst({
-//     where:{
-//       id:deelnemerid
-//     }
-//   })
-//   console.log(result?.PushData)
-//   return result?.PushData
-// }
