@@ -5,8 +5,28 @@ import db from "../prisma";
 import { GetWedstrijden } from "./WedstrijdenQueries";
 import { CheckPeriode } from "@/components/DatumFuncties";
 import { Prisma } from "@prisma/client";
+import { SaveLogging } from "./LoggingQueries";
 
-
+async function GetRennerNaam(id: number) {
+  const renner = await db.renner.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+  return renner?.naam;
+}
+async function GetSelectie(selectieid: number) {
+  const sel = await db.selectie.findFirst({
+    where: {
+      id: selectieid,
+    },
+    include: {
+      deelnemer: true,
+      renner: true,
+    },
+  });
+  return sel;
+}
 export async function GetSelectieByUserId(id: string) {
   const result = await db.selectie.findMany({
     where: {
@@ -19,14 +39,14 @@ export async function GetSelectieByUserId(id: string) {
         },
       },
     },
-    orderBy:{
-      renner:{
-        naam:'asc'
-      }
-    }
+    orderBy: {
+      renner: {
+        naam: "asc",
+      },
+    },
   });
-// console.log(id)
-// console.log(result)
+  // console.log(id)
+  // console.log(result)
   return result;
 }
 
@@ -39,7 +59,7 @@ export async function GetPeriodeAction() {
 export async function GetAlleSelectiesQuery() {
   const result = await db.selectie.findMany({
     where: {
-      datum_uit: null ,
+      datum_uit: null,
     },
     include: {
       renner: true,
@@ -49,44 +69,62 @@ export async function GetAlleSelectiesQuery() {
   return result;
 }
 
-export type DeelnemersMetSelectie = Prisma.PromiseReturnType<typeof GetUserMetSelectiesQuery>
-export async function GetUserMetSelectiesQuery(){
+export type DeelnemersMetSelectie = Prisma.PromiseReturnType<
+  typeof GetUserMetSelectiesQuery
+>;
+export async function GetUserMetSelectiesQuery() {
   const result = await db.deelnemer.findMany({
-    include:{
-      Selectie:{
-        where:{
-          datum_uit:null
+    include: {
+      Selectie: {
+        where: {
+          datum_uit: null,
         },
-        include:{
-          renner:true
-        }
-      }
-    }
-  })
-  return result
+        include: {
+          renner: true,
+        },
+      },
+    },
+  });
+  return result;
 }
 
 interface ToevoegenAanSelectieInterface {
   deelnemerid: string;
   rennerid: number;
-  periode:number;
+  periode: number;
 }
 export async function ToevoegenAanSelectie({
   deelnemerid,
   rennerid,
-  periode
+  periode,
 }: ToevoegenAanSelectieInterface) {
   console.log(
     `Start saving query with deelnemerid ${deelnemerid} and rennerid ${rennerid} and date ${new Date()}`
   );
+
   const result = await db.selectie.create({
     data: {
       deelnemerid: deelnemerid,
       rennerid: Number(rennerid),
       datum_in: new Date(),
-      transfer_in: periode == 1 ? false: true
+      transfer_in: periode == 1 ? false : true,
     },
   });
+  if (periode == 1) {
+    SaveLogging({
+      deelnemerid: deelnemerid,
+      onderwerp: "selectie",
+      boodschap: `Renner ${await GetRennerNaam(
+        rennerid
+      )} toegevoegd aan selectie`,
+    });
+  } else {
+    SaveLogging({
+      deelnemerid: deelnemerid,
+      onderwerp: "selectie",
+      boodschap: `Inkomende transfer: ${await GetRennerNaam(rennerid)}`,
+    });
+  }
   console.log(`Saving ended with id ${result.id}`);
   return result;
 }
@@ -97,6 +135,13 @@ export async function DeleteFromSelectie(selectieid: number) {
       id: selectieid,
     },
   });
+  const sel = await GetSelectie(selectieid);
+  SaveLogging({
+    deelnemerid: sel!.deelnemerid,
+    onderwerp: "selectie",
+    boodschap: `Renner ${sel?.renner.naam} toegevoegd aan selectie`,
+  });
+
   return result;
 }
 
@@ -109,6 +154,13 @@ export async function TransferUitSelectie(selectieid: number) {
       datum_uit: new Date(),
     },
   });
+  const sel = await GetSelectie(selectieid);
+  SaveLogging({
+    deelnemerid: sel!.deelnemerid,
+    onderwerp: "selectie",
+    boodschap: `Uitgaande transfer: ${sel?.renner.naam}`,
+  });
+
   return result;
 }
 

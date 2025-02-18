@@ -1,5 +1,6 @@
 "use server";
 
+
 import {
   DeleteFromSelectie,
   GetAlleSelectiesQuery,
@@ -22,6 +23,8 @@ export async function VerwijderSelectieAction({
   try {
     if (periode === 1) {
       await DeleteFromSelectie(selectieid);
+      
+         
     } else {
       await TransferUitSelectie(selectieid);
     }

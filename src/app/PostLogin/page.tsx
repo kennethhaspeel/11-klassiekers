@@ -3,6 +3,7 @@ import { GetUserById } from "../../../prisma/queries/UserQueries";
 import Aanvullen from "./Aanvullen";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { SaveLogging } from "../../../prisma/queries/LoggingQueries";
 const PostLogin = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -18,6 +19,8 @@ const PostLogin = async () => {
       />
     );
   }
+
+  SaveLogging({deelnemerid:dbuser.id,onderwerp:'identity',boodschap:'gebruiker ingelogd'})
   return (
     <div className="py-2 w-full">
       <Alert className="bg-green-600 rounded p-4">

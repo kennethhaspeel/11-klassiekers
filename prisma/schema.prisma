@@ -26,6 +26,7 @@ model Deelnemer {
     SchiftingMinuten  Int           @default(0)
     SchiftingSeconden Int           @default(0)
     PushData          PushData[]
+    Log               Log[]
 
     @@map("deelnemers")
 }
@@ -34,7 +35,7 @@ model PushData {
     id          Int       @id @default(autoincrement())
     deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
     deelnemerid String
-    endpoint    String    
+    endpoint    String
     p256        String
     auth        String
 }
@@ -111,4 +112,15 @@ model Tussenstand {
     punten      Int       @default(0)
 
     @@map("tussenstanden")
+}
+
+model Log {
+    id          Int       @id @default(autoincrement())
+    datum       DateTime  @default(now())
+    deelnemer   Deelnemer @relation(fields: [deelnemerid], references: [id])
+    deelnemerid String
+    onderwerp   String    @db.VarChar(100)
+    boodschap   String    @db.VarChar(1000)
+
+    @@map("logging")
 }
