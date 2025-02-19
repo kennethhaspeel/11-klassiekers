@@ -25,9 +25,9 @@ model Deelnemer {
     SchiftingUur      Int           @default(0)
     SchiftingMinuten  Int           @default(0)
     SchiftingSeconden Int           @default(0)
-    PushData          PushData[]
+     PushData          PushData[]
     Log               Log[]
-    Financieel        Financieel[]
+     Financieel        Financieel[]
 
     @@map("deelnemers")
 }

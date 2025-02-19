@@ -18,7 +18,7 @@ const user =await getUser()
         <Alert className="bg-red-600 rounded p-4">
         <AlertTitle>Even geduld</AlertTitle>
 
-          <AlertDescription>Er is een probleem met de database host. Deze worden zo snel mogelijk opgelost</AlertDescription>
+          <AlertDescription>Er is een probleem met de database host. Deze worden zo snel mogelijk opgelost. Als zaken niet bewaard lijken te worden, probeer het later eens opnieuw</AlertDescription>
 
       </Alert>
         <Image
