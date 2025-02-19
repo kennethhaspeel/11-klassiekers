@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import PushNotificationManager from "@/components/PushNotificationManager";
 import PushNotificationIos from "@/components/PushNotificationIos";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
 export default async function Home() {
@@ -14,6 +15,12 @@ const user =await getUser()
     <div className="flex-grow justify-center text-center mx-auto p-3">
       <div className="mx-auto py-4 flex flex-col justify-center items-center gap-4">
         <h2 className="text-2xl">De 11 Klassiekers</h2>
+        <Alert className="bg-green-600 rounded p-4">
+        <AlertTitle>Even geduld</AlertTitle>
+
+          <AlertDescription>Er is een probleem met de database host. Deze worden zo snel mogelijk opgelost</AlertDescription>
+
+      </Alert>
         <Image
           className="m-0 rounded-xl"
           src="/images/vintage1.jpg"
