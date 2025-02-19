@@ -15,7 +15,7 @@ const user =await getUser()
     <div className="flex-grow justify-center text-center mx-auto p-3">
       <div className="mx-auto py-4 flex flex-col justify-center items-center gap-4">
         <h2 className="text-2xl">De 11 Klassiekers</h2>
-        <Alert className="bg-green-600 rounded p-4">
+        <Alert className="bg-red-600 rounded p-4">
         <AlertTitle>Even geduld</AlertTitle>
 
           <AlertDescription>Er is een probleem met de database host. Deze worden zo snel mogelijk opgelost</AlertDescription>
