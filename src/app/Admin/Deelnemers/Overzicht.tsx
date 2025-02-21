@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UsersMetFinancieel } from "../../../../prisma/queries/UserQueries";
 import {
   Table,
@@ -14,6 +14,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import { PostUserFinancieelQuery } from "../../../../prisma/queries/FinancieelQueries";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Loader2 } from "lucide-react";
 
 interface Props {
   users: UsersMetFinancieel;
@@ -21,21 +32,44 @@ interface Props {
 const Overzicht = ({ users }: Props) => {
   //console.log(users);
   const [deelnemers, setDeelnemers] = useState(users!);
+  const [deelnemerid, setDeelnemerid] = useState<string | null>(null);
+  const [toonModal, SetToonModal] = useState<boolean>(false);
+  const [bedrag, setBedrag] = useState<string>("0");
+  const [betaalwijze, setBetaalwijze] = useState<string>("overschrijving");
+  const [loading, setLoading] = useState(false);
 
-  const BetalingToevoegen = async (deelnemerid: string) => {
-
+  const BetalingToevoegen = async () => {
+    setLoading(true);
     const result = await PostUserFinancieelQuery({
-      deelnemerid: deelnemerid,
-      bedrag: "15",
-      betaalwijze: "overschrijving",
+      deelnemerid: deelnemerid!,
+      bedrag: bedrag,
+      betaalwijze: betaalwijze,
     });
     if (result.success) {
-      const deels = deelnemers;
-      const deel = deels.findIndex((x) => x.id == deelnemerid);
-      deels[deel].Financieel.push(result.data!);
-      setDeelnemers(deels);
+      const deel = deelnemers.find((x) => x.id == deelnemerid);
+
+      const deels = deelnemers.filter((x) => x !== deel);
+
+      deel!.Financieel.push(result.data!);
+      deels.push(deel!);
+      setDeelnemers(
+        deels.sort(
+          (a, b) =>
+            a.naam.localeCompare(b.naam) || a.voornaam.localeCompare(b.voornaam)
+        )
+      );
     }
+
+    SetToonModal(false);
+    setLoading(false);
+    setBedrag("0")
+    setBetaalwijze('overschrijving')
+    setDeelnemerid(null)
   };
+
+  useEffect(() => {
+    console.log(deelnemers);
+  }, [deelnemers]);
   return (
     <>
       <div className="flex flex-col w-full">
@@ -47,7 +81,7 @@ const Overzicht = ({ users }: Props) => {
             <TableHeader>
               <TableRow>
                 <TableHead>Naam</TableHead>
-                {/* <TableHead>Transfers</TableHead> */}
+                <TableHead>Transfers</TableHead>
                 <TableHead>Schuld</TableHead>
 
                 <TableHead></TableHead>
@@ -59,25 +93,95 @@ const Overzicht = ({ users }: Props) => {
                   <TableCell>
                     {deel.naam} {deel.voornaam}
                   </TableCell>
-                  {/* <TableCell>
+                  <TableCell>
                     {deel.Selectie.filter((x) => x.datum_in == null).length}
-                  </TableCell> */}
+                  </TableCell>
                   <TableCell>
                     {deel.Financieel.reduce((acc, obj) => {
                       return acc + obj.bedrag;
                     }, 0)}
                   </TableCell>
                   <TableCell>
-                    <Button onClick={() => BetalingToevoegen(deel.id)}>
+                    <Button
+                      onClick={() => {
+                        setDeelnemerid(deel.id);
+                        SetToonModal(true);
+                      }}
+                    >
                       Betaling
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-         </Table> 
+          </Table>
         </div>
       </div>
+      <Dialog open={!toonModal}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Betaling Ingeven</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Bedrag
+              </Label>
+              <Input
+                id="bedrag"
+                type="number"
+                value="0"
+                className="col-span-3"
+                onChange={(e) => {
+                  setBedrag(e.target.value);
+                }}
+              />
+            </div>
+            <hr />
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right align-top">
+                Betaalwijze
+              </Label>
+              <div className="col-span-3">
+                <RadioGroup
+                  defaultValue="overschrijving"
+                  onValueChange={(e) => {
+                    setBetaalwijze(e);
+                  }}
+                  className="flex flex-col space-y-1"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="overschrijving" id="r1" />
+                    <Label htmlFor="r1">Overschrijving</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="cash" id="r2" />
+                    <Label htmlFor="r2">Cash</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="button" onClick={()=>SetToonModal(false)}>Annuleer</Button>
+            {loading ? (
+              <Button type="button" disabled>
+                <Loader2 className="animate-spin" />
+                Bewaar
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={() => {
+                  BetalingToevoegen();
+                }}
+              >
+                Bewaar
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

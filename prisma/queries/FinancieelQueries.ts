@@ -12,12 +12,12 @@ export async function PostUserFinancieelQuery({
   bedrag,
   betaalwijze,
 }: IUserFinancieel) {
-  //console.log(deelnemerid, bedrag, betaalwijze);
+  console.log(deelnemerid, bedrag, betaalwijze);
   try {
     const result = await db.financieel.create({
       data: {
         deelnemerid: deelnemerid,
-        bedrag: Number(bedrag),
+        bedrag: 0 - Number(bedrag),
         betaalwijze: betaalwijze,
       },
     });

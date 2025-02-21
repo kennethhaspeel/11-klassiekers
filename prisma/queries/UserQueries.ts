@@ -81,25 +81,48 @@ export async function GetAllPushData() {
   return result;
 }
 
-export type UsersMetFinancieel = Prisma.PromiseReturnType<typeof GetDeelnemersFinancieel>;
+export type UserFinancieel = Prisma.PromiseReturnType<
+  typeof GetDeelnemerFinancieel
+>;
 
-export async function GetDeelnemersFinancieel() {
+export async function GetDeelnemerFinancieel(deelnemerid: string) {
   try {
-    const result = await db.deelnemer.findMany({
-      include:{
-        Selectie:true,
-        Financieel:true
+    const result = await db.deelnemer.findFirst({
+      where: {
+        id: deelnemerid,
       },
-      orderBy: [{ naam: "asc" }, { voornaam: "asc" }],
+      include: {
+        Selectie: true,
+        Financieel: true,
+      },
     });
-    //console.log(result)
-    return  result;
+    return result;
   } catch (error: unknown) {
-    console.log(typeof error)
+    console.log(typeof error);
     if (error instanceof Error) {
       console.log(error.message);
-
     }
   }
 }
 
+export type UsersMetFinancieel = Prisma.PromiseReturnType<
+  typeof GetDeelnemersFinancieel
+>;
+
+export async function GetDeelnemersFinancieel() {
+  try {
+    const result = await db.deelnemer.findMany({
+      include: {
+        Selectie: true,
+        Financieel: true,
+      },
+    });
+    //console.log(result)
+    return result.sort((a,b)=>a.naam.localeCompare(b.naam) || a.voornaam.localeCompare(b.voornaam));
+  } catch (error: unknown) {
+    console.log(typeof error);
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
+  }
+}
