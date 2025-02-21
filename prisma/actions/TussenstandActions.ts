@@ -17,7 +17,7 @@ export async function VerwerkTussenstandAction(wedstrijdid: number) {
     const [uitslag, selecties] = await Promise.all([getUitslag, getSelecties]);
     const lijst: VerwerkTussenstandModel[] = [];
     selecties.map((u) => {
-      u.Selectie.map((deel) => {
+      u.Selectie.filter(x=>x.datum_uit == null).map((deel) => {
         const p =
           uitslag?.find((x) => x.rennerid == deel.rennerid)?.punten || 100;
         const punt = {

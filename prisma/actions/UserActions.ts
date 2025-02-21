@@ -5,6 +5,7 @@ import { GetDeelnemersFinancieel, InsertDeelnemer, UpdateMetFoto, UsersMetFinanc
 import { z } from "zod";
 import { GetUserMetSelectiesQuery } from "../queries/SelectieQueries";
 import { SaveLogging } from "../queries/LoggingQueries";
+import { PostUserFinancieelQuery } from "../queries/FinancieelQueries";
 
 const NieuweDeelnemerSchema = z.object({
   kindeid: z.string().min(1),
@@ -71,6 +72,7 @@ export async function InsertDeelnemerAction(
   console.log(d);
   await InsertDeelnemer(d);
    SaveLogging({deelnemerid:d.id,onderwerp:'identity',boodschap:`${d.voornaam} ${d.naam} aangevuld met ploegnaam ${d.ploegnaam}`})
+   await PostUserFinancieelQuery({deelnemerid:d.id,bedrag:"15",betaalwijze:"inschrijving"})
   return { allSaved: true };
 }
 

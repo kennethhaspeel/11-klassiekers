@@ -6,6 +6,7 @@ import { GetWedstrijden } from "./WedstrijdenQueries";
 import { CheckPeriode } from "@/components/DatumFuncties";
 import { Prisma } from "@prisma/client";
 import { SaveLogging } from "./LoggingQueries";
+import { PostUserFinancieelQuery } from "./FinancieelQueries";
 
 async function GetRennerNaam(id: number) {
   const renner = await db.renner.findUnique({
@@ -110,6 +111,7 @@ export async function ToevoegenAanSelectie({
       transfer_in: periode == 1 ? false : true,
     },
   });
+
   if (periode == 1) {
     SaveLogging({
       deelnemerid: deelnemerid,
@@ -119,6 +121,11 @@ export async function ToevoegenAanSelectie({
       )} toegevoegd aan selectie`,
     });
   } else {
+    await PostUserFinancieelQuery({
+      deelnemerid: deelnemerid,
+      bedrag: "2",
+      betaalwijze: "transfer",
+    });
     SaveLogging({
       deelnemerid: deelnemerid,
       onderwerp: "selectie",

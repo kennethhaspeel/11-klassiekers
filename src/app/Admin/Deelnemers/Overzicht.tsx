@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { PostUserFinancieelQuery } from "../../../../prisma/queries/FinancieelQueries";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -25,6 +26,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2 } from "lucide-react";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface Props {
   users: UsersMetFinancieel;
@@ -62,8 +65,6 @@ const Overzicht = ({ users }: Props) => {
 
     SetToonModal(false);
     setLoading(false);
-    setBedrag("0")
-    setBetaalwijze('overschrijving')
     setDeelnemerid(null)
   };
 
@@ -81,8 +82,8 @@ const Overzicht = ({ users }: Props) => {
             <TableHeader>
               <TableRow>
                 <TableHead>Naam</TableHead>
-                <TableHead>Transfers</TableHead>
-                <TableHead>Schuld</TableHead>
+                <TableHead className="text-center">Transfers</TableHead>
+                <TableHead className="text-center">Schuld</TableHead>
 
                 <TableHead></TableHead>
               </TableRow>
@@ -93,15 +94,15 @@ const Overzicht = ({ users }: Props) => {
                   <TableCell>
                     {deel.naam} {deel.voornaam}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     {deel.Selectie.filter((x) => x.datum_in == null).length}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     {deel.Financieel.reduce((acc, obj) => {
                       return acc + obj.bedrag;
                     }, 0)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     <Button
                       onClick={() => {
                         setDeelnemerid(deel.id);
@@ -117,9 +118,13 @@ const Overzicht = ({ users }: Props) => {
           </Table>
         </div>
       </div>
-      <Dialog open={!toonModal}>
+      <Dialog open={toonModal} onOpenChange={SetToonModal}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
+            <VisuallyHidden asChild>
+               <DialogDescription>Betaling ingeven</DialogDescription>
+            </VisuallyHidden>
+           
             <DialogTitle>Betaling Ingeven</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -130,7 +135,7 @@ const Overzicht = ({ users }: Props) => {
               <Input
                 id="bedrag"
                 type="number"
-                value="0"
+                defaultValue="0"
                 className="col-span-3"
                 onChange={(e) => {
                   setBedrag(e.target.value);
@@ -163,7 +168,10 @@ const Overzicht = ({ users }: Props) => {
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" onClick={()=>SetToonModal(false)}>Annuleer</Button>
+            <DialogClose asChild>
+              <Button type="button" onClick={()=>SetToonModal(false)}>Annuleer</Button>
+            </DialogClose>
+            
             {loading ? (
               <Button type="button" disabled>
                 <Loader2 className="animate-spin" />
