@@ -126,3 +126,20 @@ export async function GetDeelnemersFinancieel() {
     }
   }
 }
+
+export type UsersMetPush = Prisma.PromiseReturnType<
+  typeof GetDeelnemersPush>;
+  
+export async function GetDeelnemersPush(){
+  const result = await db.deelnemer.findMany({
+    include:{
+      PushData:true
+    },
+    where:{
+      PushData:{
+        some:{}
+      }
+    }
+  })
+  return result
+}

@@ -286,6 +286,21 @@ const AuthMenu = ({ isAdmin }: Props) => {
                         Uitslag Ingeven
                       </Link>
                     </Button>
+                    <Button
+                      className="w-full mt-4"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                      asChild
+                    >
+                      <Link
+                        href="/Admin/Deelnemers"
+                        className="flex justify-center items-center gap-2 ml-0"
+                        title="Deelnemers"
+                      >
+                        Deelnemers
+                      </Link>
+                    </Button>
                   </>
                 ) : (
                   ""

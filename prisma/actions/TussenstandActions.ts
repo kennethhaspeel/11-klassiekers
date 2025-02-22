@@ -19,7 +19,7 @@ export async function VerwerkTussenstandAction(wedstrijdid: number) {
     selecties.map((u) => {
       u.Selectie.filter(x=>x.datum_uit == null).map((deel) => {
         const p =
-          uitslag?.find((x) => x.rennerid == deel.rennerid)?.punten || 100;
+          uitslag?.find((x) => x.rennerid == deel.rennerid)?.punten || 55;
         const punt = {
           deelnemerid: deel.deelnemerid,
           rennerid: deel.rennerid,

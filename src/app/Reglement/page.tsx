@@ -62,14 +62,14 @@ const Reglement = async () => {
                 De puntentelling is de grootste verandering bij andere edities en is zo simpel als maar kan
               </p>
               <p>
-                De top 50 krijgt hun positie als punten en de bedoeling is dus om <span className="font-semibold underline underline-offset-4 decoration-4 decoration-sky-200">zo weinig mogelijk punten</span> te verzamelen. Renners in uw selectie die buiten de top 50 aankomen of niet deelnemen, krijgen 100 punten
+                De top 50 krijgt hun positie als punten en de bedoeling is dus om <span className="font-semibold underline underline-offset-4 decoration-4 decoration-sky-200">zo weinig mogelijk punten</span> te verzamelen. Renners in uw selectie die buiten de top 50 aankomen of niet deelnemen, krijgen 55 punten
               </p>
             </AlertDescription>
           </Alert>
         </div>
         <div className="w-full p-2">
           Er zijn geen dagprijzen. Enkel het eindresultaat telt.
-          <br />U beschikt over drie <strong>inkomende</strong> transfers.
+          <br />U beschikt over vijf <strong>inkomende</strong> transfers.
           <br />
           Er is een schiftingsvraag voorzien: hoe lang (uren-minuten-seconden)
           doet de winnaar over Strade Bianche?

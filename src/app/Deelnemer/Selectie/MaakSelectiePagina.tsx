@@ -35,7 +35,7 @@ const MaakSelectiePagina = ({ rennersLijst, periode, deelnemer }: Props) => {
           </div>
           <div>
             <Badge>
-              {3 - renners.filter((x) => x.transfer_in == true).length} transfers
+              {5 - renners.filter((x) => x.transfer_in == true).length} transfers
               over
             </Badge>
           </div>

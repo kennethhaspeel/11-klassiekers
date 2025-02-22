@@ -38,7 +38,7 @@ const ZoekRenner = ({
                 U hebt 10 renners in uw selectie
               </AlertDescription>
             </Alert>
-          ) : renners.filter((x) => x.transfer_in == true ).length == 3 ? (
+          ) : renners.filter((x) => x.transfer_in == true ).length == 5 ? (
             <Alert className="bg-orange-600">
               <AlertDescription>
                 U hebt geen transfers meer
