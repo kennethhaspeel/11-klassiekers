@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Send } from "lucide-react";
 import { ZendBericht } from "@/components/PushNotificationActions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ZendMail } from "@/components/ZendMail";
 
 interface Props {
   deelnemers: UsersMetPush;
@@ -43,9 +44,15 @@ const StuurBericht = ({ deelnemers }: Props) => {
     setVerstuurd(true);
     setSending(false);
   };
+
+  const zendMail = async()=>{
+    const result = await ZendMail({bestemmelingen:["kenneth@haspeel.be"],onderwerp:"testbericht",boodschap:"<p>dit is een <strong>testbericht</strong></p>"})
+    console.log(result)
+  }
   return (
     <>
       <div className="w-full">
+        <Button onClickCapture={()=>{zendMail()}}>Klike</Button>
         <div className="flex flex-col mx-3">
           {fout ? (
             <Alert>
