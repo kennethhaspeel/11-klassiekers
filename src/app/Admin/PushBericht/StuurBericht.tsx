@@ -58,7 +58,7 @@ const StuurBericht = ({ deelnemers }: Props) => {
             ""
           )}
           <div className="text-2xl py-2">Selecteer Deelnemers</div>
-          <div className="flex flex-row gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-[20rem] gap-3 grow-0">
             {deelnemers.map((deel) =>
               selected.some((x) => x == deel.id) ? (
                 <Button

@@ -62,7 +62,7 @@ const Reglement = async () => {
                 De puntentelling is de grootste verandering bij andere edities en is zo simpel als maar kan
               </p>
               <p>
-                De top 50 krijgt hun positie als punten en de bedoeling is dus om <span className="font-semibold underline underline-offset-4 decoration-4 decoration-sky-200">zo weinig mogelijk punten</span> te verzamelen. Renners in uw selectie die buiten de top 50 aankomen of niet deelnemen, krijgen 55 punten
+                De top 50 krijgt hun positie als punten en de bedoeling is dus om <span className="font-semibold underline underline-offset-4 decoration-4 decoration-sky-200">zo weinig mogelijk punten</span> te verzamelen. Renners in uw selectie die buiten de top 50 aankomen of niet deelnemen, krijgen 100 punten
               </p>
             </AlertDescription>
           </Alert>
