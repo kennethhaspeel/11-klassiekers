@@ -1,11 +1,15 @@
 import React from 'react'
-import QuillPage from "./QuillPage"
+import Quill from './Quill'
+import { Deelnemer } from '@prisma/client'
+import { GetDeelnemersEmail } from '../../../../prisma/queries/UserQueries'
 
-const QuillServer = () => {
+
+
+const QuillServer = async() => {
+  const deelnemers:Deelnemer[] = await GetDeelnemersEmail()
   return (
     <>
-    <p>hier komt een text editor</p>
-    <QuillPage/>
+    <Quill deelnemers={deelnemers}/>
     </>
   )
 }

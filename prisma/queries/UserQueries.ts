@@ -141,5 +141,10 @@ export async function GetDeelnemersPush(){
       }
     }
   })
-  return result
+  return result.sort((a,b)=>a.naam.localeCompare(b.naam) || a.voornaam.localeCompare(b.voornaam))
+}
+
+export async function GetDeelnemersEmail(){
+  const result = await db.deelnemer.findMany()
+  return result.sort((a,b)=>a.naam.localeCompare(b.naam) || a.voornaam.localeCompare(b.voornaam))
 }
