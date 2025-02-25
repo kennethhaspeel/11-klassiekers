@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { ZendMail } from "@/components/ZendMail";
 import { Deelnemer } from "@prisma/client";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -54,31 +56,48 @@ interface IQuill {
   deelnemers: Deelnemer[];
 }
 export default function Quill({ deelnemers }: IQuill) {
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(
+    deelnemers.map((a) => a.email)
+  );
   const [content, setContent] = useState("");
+  const [titel,setTitel]=useState<string>("")
 
   const AanpassingTekst = (nieuweTekst: string) => {
     setContent(nieuweTekst);
   };
 
-  const Verstuur = () => {
-    console.log(selected);
-    console.log(content)
+  const SelecteerAlles = () => {
+    const d = deelnemers.map((a) => a.email);
+    setSelected(d);
+  };
+
+  const DeselecteerAlles = () => {
+    setSelected([]);
+  };
+
+  const Verstuur = async () => {
+    const result = await ZendMail({bestemmelingen:selected,onderwerp:titel,boodschap:content})
+    console.log(result);
+
   };
   return (
     <>
       <div className="w-full h-screen flex flex-col grow mx-4">
-        <div>
-          <h2 className="text-2xl">Selecteer Bestemmelingen</h2>
+        <div className="my-2">
+          <h2 className="text-2xl">
+            Selecteer Bestemmelingen{" "}
+            <Button onClick={() => {SelecteerAlles()}}>Selecteer Alles</Button>{" "}
+            <Button onClick={() => {DeselecteerAlles()}}>Deselecteer Alles</Button>
+          </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 grow-0">
           {deelnemers.map((deel) =>
-            selected.some((x) => x == deel.id) ? (
+            selected.some((x) => x == deel.email) ? (
               <Button
-                key={deel.id}
+                key={deel.email}
                 className="bg-green-700 text-white"
                 onClick={() => {
-                  setSelected(selected.filter((x) => x !== deel.id));
+                  setSelected(selected.filter((x) => x !== deel.email));
                 }}
               >
                 {deel.voornaam} {deel.naam}
@@ -88,7 +107,7 @@ export default function Quill({ deelnemers }: IQuill) {
                 key={deel.id}
                 className="bg-gray-700 text-white"
                 onClick={() => {
-                  setSelected([...selected, deel.id]);
+                  setSelected([...selected, deel.email]);
                 }}
               >
                 {deel.voornaam} {deel.naam}
@@ -97,7 +116,9 @@ export default function Quill({ deelnemers }: IQuill) {
           )}
         </div>
         <Separator className="bg-gray-600 my-2" />
-        <div>Hier komt een input voor titel</div>
+        <div>
+          <Input type="text" placeholder="Geef een titel" defaultValue={titel} onChange={(e)=>setTitel(e.target.value)} className="bg-white"/>
+        </div>
         <div className="h-96">
           <QuillNoSSRWrapper
             modules={modules}

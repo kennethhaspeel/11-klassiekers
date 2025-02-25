@@ -48,7 +48,7 @@ export async function ZendBericht({ subData, titel, boodschap }: IZendBericht) {
           auth: d.auth,
         },
       };
-      await webPush.sendNotification(
+     await webPush.sendNotification(
         subscription,
         JSON.stringify({
           title: titel,
@@ -56,6 +56,8 @@ export async function ZendBericht({ subData, titel, boodschap }: IZendBericht) {
           icon: "/favicon-32x32.png",
         })
       );
+      console.log(`Bericht verstuurd naar ${d.endpoint}`)
+
     });
     return { success: true };
   } catch (error) {
