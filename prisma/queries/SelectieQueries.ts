@@ -137,12 +137,13 @@ export async function ToevoegenAanSelectie({
 }
 
 export async function DeleteFromSelectie(selectieid: number) {
+    const sel = await GetSelectie(selectieid);
   const result = await db.selectie.delete({
     where: {
       id: selectieid,
     },
   });
-  const sel = await GetSelectie(selectieid);
+
   SaveLogging({
     deelnemerid: sel!.deelnemerid,
     onderwerp: "selectie",

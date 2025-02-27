@@ -72,6 +72,7 @@ const RennerCard = ({
       setRenners(result.data as unknown as SelectieMetRenner[]);
     }
     if (result.error) {
+      console.log(result.error as string)
       setError(result.error as string);
     }
     setIsBezig(false);
