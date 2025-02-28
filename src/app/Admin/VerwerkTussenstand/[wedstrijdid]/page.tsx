@@ -12,10 +12,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import GeenToegang from "@/components/GeenToegang";
 
 type Params = Promise<{ wedstrijdid: number }>;
 
 const VerwerkTussenstand = async ({ params }: { params: Params }) => {
+  const { isAuthenticated, getPermissions } = getKindeServerSession();
+
+  const auth = await isAuthenticated();
+  const rechten = await getPermissions();
+  if (!auth || (rechten && !rechten?.permissions.includes("admin")) ) {
+    return <GeenToegang />;
+  }
   const { wedstrijdid } = await params;
 
   const getUitslag: Promise<Uitslag[] | null | undefined> =
