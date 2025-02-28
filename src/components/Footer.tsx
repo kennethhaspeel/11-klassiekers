@@ -2,7 +2,9 @@
 
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
+
 export default function Footer() {
+  
   return (
     <>
       <div className="flex sticky bottom-0">
@@ -10,6 +12,9 @@ export default function Footer() {
           <div className="flex flex-row justify-between">
             <div className="align-middle">
               &copy; Kenneth Haspeel
+            </div>
+            <div>
+
             </div>
             <div>
               <ThemeSwitcher />
