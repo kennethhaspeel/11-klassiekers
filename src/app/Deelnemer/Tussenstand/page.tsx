@@ -10,8 +10,8 @@ import {
 import GeenToegang from "@/components/GeenToegang";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { GetWedstrijden } from "../../../../prisma/queries/WedstrijdenQueries";
-// import { DatumVoorbij } from "@/components/DatumFuncties";
-// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { DatumVoorbij } from "@/components/DatumFuncties";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AccordionContent } from "@/components/ui/accordion";
 import WedstrijdDetail from "./WedstrijdDetail";
 
@@ -29,20 +29,20 @@ const TussenstandOverzicht = async () => {
   }
   const lijst = (await GetWedstrijden()).sort((a,b)=> a.datum.valueOf() - b.datum.valueOf());
   
-  // if (!DatumVoorbij(lijst[0].datum)) {
-  //   return (
-  //     <div className="w-full flex flex-col">
-  //       <Alert className="bg-red-600">
-  //         <AlertTitle className="text-xl font-bold">
-  //           Nog geen tussenstand
-  //         </AlertTitle>
-  //         <AlertDescription>
-  //           De eerste wedstrijd is nog niet verreden
-  //         </AlertDescription>
-  //       </Alert>
-  //     </div>
-  //   );
-  // }
+  if (!DatumVoorbij(lijst[0].datum)) {
+    return (
+      <div className="w-full flex flex-col">
+        <Alert className="bg-red-600">
+          <AlertTitle className="text-xl font-bold">
+            Nog geen tussenstand
+          </AlertTitle>
+          <AlertDescription>
+            De eerste wedstrijd is nog niet verreden
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
   //console.log(lijst)
   const data: DeelnemerMetTussenstand = await GetTussenstandAction();
   data.map(d=>(d.Tussenstand.map(t=>console.log(t))))

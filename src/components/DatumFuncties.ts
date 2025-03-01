@@ -6,7 +6,7 @@ const GetDatumFromDate = (datum: Date) => {
 };
 export const DatumVoorbij = (datum: Date) => {
   const vandaag = new Date();
-  return GetDatumFromDate(datum) < GetDatumFromDate(vandaag) ? true : false;
+  return GetDatumFromDate(datum) <= GetDatumFromDate(vandaag) ? true : false;
 };
 
 export const DateToDDMMYYYY = (datum: Date, metTijd = false) => {
