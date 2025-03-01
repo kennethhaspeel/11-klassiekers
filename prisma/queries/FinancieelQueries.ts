@@ -17,7 +17,7 @@ export async function PostUserFinancieelQuery({
     const result = await db.financieel.create({
       data: {
         deelnemerid: deelnemerid,
-        bedrag: 0 - Number(bedrag),
+        bedrag:  Number(bedrag),
         betaalwijze: betaalwijze,
       },
     });

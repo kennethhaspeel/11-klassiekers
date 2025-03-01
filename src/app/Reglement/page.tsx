@@ -69,7 +69,7 @@ const Reglement = async () => {
         </div>
         <div className="w-full p-2">
           Er zijn geen dagprijzen. Enkel het eindresultaat telt.
-          <br />U beschikt over vijf <strong>inkomende</strong> transfers.
+          <br />U kunt tien renners selecteren en u beschikt over vijf <strong>inkomende</strong> transfers.
           <br />
           Er is een schiftingsvraag voorzien: hoe lang (uren-minuten-seconden)
           doet de winnaar over Strade Bianche?

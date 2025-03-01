@@ -137,6 +137,21 @@ const AuthMenu = ({ isAdmin }: Props) => {
                         Deelnemers
                       </Link>
                     </Button>
+                    <Button
+                      variant="ghost"
+                      size="default"
+                      aria-label="zendmail"
+                      className="rounded-full"
+                      asChild
+                    >
+                      <Link
+                        href="/Admin/ZendMail"
+                        className="flex justify-center items-center gap-2 ml-0"
+                        title="Mail"
+                      >
+                        Mail
+                      </Link>
+                    </Button>
                   </div>
                 ) : (
                   ""

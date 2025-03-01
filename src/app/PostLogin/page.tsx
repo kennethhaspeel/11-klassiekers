@@ -26,10 +26,13 @@ const PostLogin = async () => {
   return (
     <div className="py-2 w-full">
       <Alert className="bg-green-600 rounded p-4">
-        <AlertTitle>U bent ingelogd</AlertTitle>
+        <AlertTitle>U bent ingelogd als <strong>{dbuser.ploegnaam}</strong></AlertTitle>
         <VisuallyHidden>
           <AlertDescription>U bent ingelogd</AlertDescription>
         </VisuallyHidden>
+        <AlertDescription>
+          <p>Uw antwoord op schiftingsvraag: {dbuser.SchiftingUur} uur, {dbuser.SchiftingMinuten} min, {dbuser.SchiftingSeconden} sec</p>
+        </AlertDescription>
       </Alert>
       <div>
       <div className="flex-grow justify-center text-center mx-auto">

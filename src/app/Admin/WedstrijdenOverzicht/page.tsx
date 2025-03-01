@@ -15,10 +15,11 @@ import { DateToDDMMYYYY,  KlaarVoorUitslag } from "@/components/DatumFuncties";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 const page = async () => {
-  const { isAuthenticated } = getKindeServerSession();
+  const { isAuthenticated, getPermissions } = getKindeServerSession();
 
   const auth = await isAuthenticated();
-  if (!auth) {
+  const rechten = await getPermissions();
+  if (!auth || (rechten && !rechten?.permissions.includes("admin")) ) {
     return <GeenToegang />;
   }
 

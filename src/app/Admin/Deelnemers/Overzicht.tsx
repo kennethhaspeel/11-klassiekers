@@ -45,7 +45,7 @@ const Overzicht = ({ users }: Props) => {
     setLoading(true);
     const result = await PostUserFinancieelQuery({
       deelnemerid: deelnemerid!,
-      bedrag: bedrag,
+      bedrag: `-${bedrag}`,
       betaalwijze: betaalwijze,
     });
     if (result.success) {
