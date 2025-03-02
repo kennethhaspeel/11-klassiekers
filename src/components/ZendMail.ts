@@ -1,6 +1,7 @@
 "use server";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { SaveLogging } from "../../prisma/queries/LoggingQueries";
 
 interface Props {
   bestemmelingen: string[];
@@ -37,16 +38,25 @@ export async function ZendMail({
     sender: `Do not REPLY <${MAIL_SENDER_EMAIL}>`,
   };
   const transport = nodemailer.createTransport(options);
+  const delay = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
   try {
     for (const bestemmeling of bestemmelingen) {
-      const sendResult = await transport.sendMail({
-        from: MAIL_SENDER_EMAIL,
-        to: bestemmeling,
-        subject: onderwerp,
-        html: boodschap,
-      });
-      console.log(sendResult);
+      try {
+        const sendResult = await transport.sendMail({
+          from: MAIL_SENDER_EMAIL,
+          to: bestemmeling,
+          subject: onderwerp,
+          html: boodschap,
+        });
+
+        console.log(sendResult);
+        await delay(1500);
+      } catch (error) {
+        console.log(error);
+      }
     }
     return { success: true, data: null };
   } catch (error) {
