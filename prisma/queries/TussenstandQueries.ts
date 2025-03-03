@@ -3,7 +3,6 @@
 import { Prisma } from "@prisma/client";
 import { VerwerkTussenstandModel } from "../Models/VerwerkTussenStand";
 import db from "../prisma";
-import { HandleFunction } from "@/components/ErrorHandling";
 import { UpdateWedstrijdStatus } from "./WedstrijdenQueries";
 
 export async function VerwerkTussenstandQuery(
