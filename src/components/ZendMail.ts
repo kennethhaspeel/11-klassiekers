@@ -1,7 +1,7 @@
 "use server";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { SaveLogging } from "../../prisma/queries/LoggingQueries";
+
 
 interface Props {
   bestemmelingen: string[];
