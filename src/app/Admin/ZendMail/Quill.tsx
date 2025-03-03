@@ -117,7 +117,7 @@ export default function Quill({ deelnemers }: IQuill) {
         </div>
         <Separator className="bg-gray-600 my-2" />
         <div>
-          <Input type="text" placeholder="Geef een titel" defaultValue={titel} onChange={(e)=>setTitel(e.target.value)} className="bg-white"/>
+          <Input type="text" placeholder="Geef een titel" defaultValue={titel} onChange={(e)=>setTitel(e.target.value)} className="bg-white text-black"/>
         </div>
         <div className="h-96">
           <QuillNoSSRWrapper
@@ -126,7 +126,7 @@ export default function Quill({ deelnemers }: IQuill) {
             theme="snow"
             value={content}
             onChange={AanpassingTekst}
-            className="w-full h-80 my-5 bg-white grow"
+            className="w-full h-80 my-5 bg-white text-black grow"
           />
         </div>
         <div className="mt-2">

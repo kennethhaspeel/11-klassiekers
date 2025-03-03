@@ -76,10 +76,10 @@ const TussenstandOverzicht = async () => {
                   <AccordionHeader>
                     <AccordionTrigger className="w-full bg-slate-700 p-3">
                       <div className="w-full flex flex-row">
-                        <div className="w-3/5 md:w-2/5 text-left">
+                        <div className="w-3/5 md:w-2/5 text-left text-white">
                           {d.ploegnaam}
                         </div>
-                        <div className="w-1/5 text-right">{d.punten}</div>
+                        <div className="w-1/5 text-right text-white">{d.punten}</div>
                       </div>
                     </AccordionTrigger>
                   </AccordionHeader>

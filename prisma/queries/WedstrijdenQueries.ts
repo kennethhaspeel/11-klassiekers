@@ -69,7 +69,7 @@ export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
       }
     }
 
-    await UpdateWedstrijdStatus({wedstrijdid:Number(data.wedstrijdid),afgesloten:true})
+    await db.$executeRaw`UPDATE public.wedstrijden SET afgesloten = TRUE WHERE id=${Number(data.wedstrijdid)}`;
 
     // revalidatePath(`/Admin/VerwerkWedstrijd/${data.wedstrijdid}`);
     // revalidatePath("/Deelnemer/WedstrijdenOverzicht");
