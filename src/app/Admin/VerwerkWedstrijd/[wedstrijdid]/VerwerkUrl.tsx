@@ -27,9 +27,7 @@ interface Params {
 }
 const VerwerkUrl = ({ wedstrijdid }: Params) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [url, setUrl] = useState<string | null>(
-    "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
-  );
+  const [url, setUrl] = useState<string | null>(null);
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
   const [error, setError] = useState<string | null>(null);
   const [uitslagBewaard, setUitslagBewaard] = useState<boolean>(false);
@@ -156,7 +154,7 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
               <Input
                 type="text"
                 name="zoekterm"
-                defaultValue="https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
+                defaultValue=""
                 placeholder="geen url ingegeven"
                 onChange={(e) => setUrl(e.target.value)}
                 className="w-full"
