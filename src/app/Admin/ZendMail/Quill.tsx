@@ -76,8 +76,11 @@ export default function Quill({ deelnemers }: IQuill) {
   };
 
   const Verstuur = async () => {
-    const result = await ZendMail({bestemmelingen:selected,onderwerp:titel,boodschap:content})
-    console.log(result);
+    for(const bestem of selected){
+      const result = await ZendMail({bestemmelingen:[bestem],onderwerp:titel,boodschap:content})
+      setSelected(selected.filter((x) => x !== bestem));
+      console.log(result)
+    }
 
   };
   return (

@@ -53,7 +53,7 @@ export async function ZendMail({
         });
 
         console.log(sendResult);
-        await delay(1500);
+        await delay(500);
       } catch (error) {
         console.log(error);
       }
