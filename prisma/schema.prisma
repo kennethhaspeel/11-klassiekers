@@ -96,6 +96,7 @@ model Wedstrijd {
     naam        String        @db.VarChar(100)
     datum       DateTime      @db.Date
     afgesloten  Boolean
+    url         String?
     Uitslag     Uitslag[]
     Tussenstand Tussenstand[]
 

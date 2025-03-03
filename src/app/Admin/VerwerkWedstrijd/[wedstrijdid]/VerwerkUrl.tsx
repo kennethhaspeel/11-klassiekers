@@ -16,6 +16,7 @@ import SpinnersBlok from "@/components/spinners";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SaveUitslagWedstrijdAction } from "../../../../../prisma/actions/UitslagActions";
 import { VerwerkTussenstandAction } from "../../../../../prisma/actions/TussenstandActions";
+import { SetWedstrijdUrl } from "../../../../../prisma/queries/WedstrijdenQueries";
 
 interface uitslagInterface {
   positie: number;
@@ -26,9 +27,7 @@ interface Params {
 }
 const VerwerkUrl = ({ wedstrijdid }: Params) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [url, setUrl] = useState<string | null>(
-    "https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
-  );
+  const [url, setUrl] = useState<string | null>(null);
   const [uitslag, setUitslag] = useState<uitslagInterface[] | null>();
   const [error, setError] = useState<string | null>(null);
   const [uitslagBewaard, setUitslagBewaard] = useState<boolean>(false);
@@ -42,24 +41,27 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
   };
 
   const saveData = async () => {
-    setLoading(true);
-    const resultaat = await SaveUitslagWedstrijdAction({
-      wedstrijdid: wedstrijdid,
-      resultaat: uitslag!,
-    });
-    if (resultaat.error) {
-      setError(resultaat.error);
-    } else {
-      setUitslagBewaard(true);
-      const u = await VerwerkTussenstandAction(wedstrijdid);
-      if (u?.success) {
-        setUitslagVerwerkt(true);
+    if (url) {
+      setLoading(true);
+      await SetWedstrijdUrl({ wedstrijdid: wedstrijdid, url: url });
+      const resultaat = await SaveUitslagWedstrijdAction({
+        wedstrijdid: wedstrijdid,
+        resultaat: uitslag!,
+      });
+      if (resultaat.error) {
+        setError(resultaat.error);
       } else {
-        setError(u!.message!);
+        setUitslagBewaard(true);
+        const u = await VerwerkTussenstandAction(wedstrijdid);
+        if (u?.success) {
+          setUitslagVerwerkt(true);
+        } else {
+          setError(u!.message!);
+        }
+        console.log(u);
       }
-      console.log(u);
+      setLoading(false);
     }
-    setLoading(false);
   };
   if (loading) {
     return <SpinnersBlok />;
@@ -152,7 +154,7 @@ const VerwerkUrl = ({ wedstrijdid }: Params) => {
               <Input
                 type="text"
                 name="zoekterm"
-                defaultValue="https://www.procyclingstats.com/race/omloop-het-nieuwsblad/2024/result"
+                defaultValue=""
                 placeholder="geen url ingegeven"
                 onChange={(e) => setUrl(e.target.value)}
                 className="w-full"

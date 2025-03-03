@@ -14,22 +14,21 @@ export async function GetWedstrijden() {
 }
 
 export async function GetWedstrijdByIdQuery(wedstrijdid: number) {
-    const result = await db.wedstrijd.findUnique({
-      where: {
-        id: Number(wedstrijdid),
-      },
-    });
-    return result;
-
+  const result = await db.wedstrijd.findUnique({
+    where: {
+      id: Number(wedstrijdid),
+    },
+  });
+  return result;
 }
 
-export async function GetUitslagByWedstrijdIdQuery(wedstrijdid:number){
+export async function GetUitslagByWedstrijdIdQuery(wedstrijdid: number) {
   const result = await db.uitslag.findMany({
-    where:{
-      wedstrijdid: Number(wedstrijdid)
+    where: {
+      wedstrijdid: Number(wedstrijdid),
     },
-  })
-  return result
+  });
+  return result;
 }
 
 export async function GetRennersPerUitslag(wedstrijdid: number) {
@@ -59,7 +58,7 @@ interface BewaarUitslagInterface {
 export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
   try {
     for (const rij of data.uitslag) {
-      console.log(rij)
+      console.log(rij);
       const renner = await GetRennerByIdQuery(rij.naam);
       if (renner) {
         await db.$executeRaw`insert into public.uitslagen(rennerid,wedstrijdid,punten)values(${Number(
@@ -70,11 +69,10 @@ export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
       }
     }
 
-    await db.$executeRaw`UPDATE public.wedstrijden SET afgesloten = TRUE WHERE id=${Number(data.wedstrijdid)}`;
+    await UpdateWedstrijdStatus({wedstrijdid:Number(data.wedstrijdid),afgesloten:true})
 
     // revalidatePath(`/Admin/VerwerkWedstrijd/${data.wedstrijdid}`);
     // revalidatePath("/Deelnemer/WedstrijdenOverzicht");
-    
   } catch (exception: unknown) {
     console.log(exception as string);
   }
@@ -83,4 +81,31 @@ export async function PostUitslagWedstrijdQuery(data: BewaarUitslagInterface) {
 export async function DeleteResultatenVanWedstrijdQuery(wedstrijdid: number) {
   await db.$executeRaw`DELETE FROM public.uitslagen WHERE wedstrijdid = ${wedstrijdid}`;
   revalidatePath(`/Admin/VerwerkWedstrijd/${wedstrijdid}`);
+}
+
+interface ISetWedstrijdUrl {
+  wedstrijdid: number;
+  url: string;
+}
+export async function SetWedstrijdUrl({ wedstrijdid, url }: ISetWedstrijdUrl) {
+  await db.wedstrijd.update({
+    where: {
+      id: Number(wedstrijdid),
+    },
+    data: {
+      url: url,
+    },
+  });
+}
+
+interface IUpdateWedstrijdStatus {
+  wedstrijdid: number;
+  afgesloten: boolean;
+}
+export async function UpdateWedstrijdStatus({wedstrijdid,afgesloten}:IUpdateWedstrijdStatus){
+  if(afgesloten){
+    await db.$executeRaw`UPDATE public.wedstrijden SET afgesloten = TRUE WHERE id=${Number(wedstrijdid)}`;
+  } else {
+    await db.$executeRaw`UPDATE public.wedstrijden SET afgesloten = FALSE WHERE id=${Number(wedstrijdid)}`;
+  }
 }
