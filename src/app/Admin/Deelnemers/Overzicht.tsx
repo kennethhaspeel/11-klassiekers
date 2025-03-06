@@ -95,7 +95,7 @@ const Overzicht = ({ users }: Props) => {
                     {deel.naam} {deel.voornaam}
                   </TableCell>
                   <TableCell className="text-center">
-                    {deel.Selectie.filter((x) => x.datum_in == null).length}
+                    {deel.Selectie.filter((x) => x.transfer_in  == true).length}
                   </TableCell>
                   <TableCell className="text-center">
                     {deel.Financieel.reduce((acc, obj) => {

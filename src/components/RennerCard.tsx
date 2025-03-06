@@ -105,6 +105,7 @@ const RennerCard = ({
                   height={30}
                   alt="vlag"
                   style={{height:'auto',width:'auto'}}
+                  unoptimized
                 />
               </div>
               <div>{rennerdetail.naam}</div>
@@ -126,6 +127,7 @@ const RennerCard = ({
                       height={100}
                       alt="foto"
                       style={{height:'auto',width:'auto'}}
+                      unoptimized
                     />
                   ) : (
                     <></>
