@@ -82,6 +82,7 @@ const Overzicht = ({ users }: Props) => {
             <TableHeader>
               <TableRow>
                 <TableHead>Naam</TableHead>
+                <TableHead>Ploeg</TableHead>
                 <TableHead className="text-center">Transfers</TableHead>
                 <TableHead className="text-center">Schuld</TableHead>
 
@@ -93,6 +94,9 @@ const Overzicht = ({ users }: Props) => {
                 <TableRow key={deel.id}>
                   <TableCell>
                     {deel.naam} {deel.voornaam}
+                  </TableCell>
+                  <TableCell>
+                    {deel.ploegnaam}
                   </TableCell>
                   <TableCell className="text-center">
                     {deel.Selectie.filter((x) => x.transfer_in  == true).length}

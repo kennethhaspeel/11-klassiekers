@@ -64,12 +64,12 @@ const AnonMenu = () => {
               </LoginLink>
             </Button>
 
-            <Button asChild variant="ghost" size="default">
+            {/* <Button asChild variant="ghost" size="default">
               <Link href="/Registratie">
                 <UserPen />
                 Registreer
               </Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
@@ -143,12 +143,12 @@ const AnonMenu = () => {
                     Log In
                   </LoginLink>
                 </Button>
-                <Button asChild className="w-full py-2">
+                {/* <Button asChild className="w-full py-2">
                   <RegisterLink>
                     <UserPen />
                     Registreer
                   </RegisterLink>
-                </Button>
+                </Button> */}
               </div>
             </SheetContent>
           </Sheet>
