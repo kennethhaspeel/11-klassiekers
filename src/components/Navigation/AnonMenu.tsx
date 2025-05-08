@@ -9,10 +9,9 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 import {
-  LoginLink,
-  RegisterLink,
+  LoginLink
 } from "@kinde-oss/kinde-auth-nextjs/components";
-import { LogIn, MenuIcon, UserPen } from "lucide-react";
+import { LogIn, MenuIcon} from "lucide-react";
 import { useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
